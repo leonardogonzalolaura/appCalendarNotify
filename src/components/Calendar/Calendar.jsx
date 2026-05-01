@@ -16,6 +16,7 @@ import CalendarHeader from './CalendarHeader';
 import CalendarWeekDays from './CalendarWeekDays';
 import CalendarDay from './CalendarDay';
 import CalendarWatermark from './CalendarWatermark';
+import CalendarToolbar from './CalendarToolbar';
 
 const Calendar = ({ onDayClick }) => {
     const { activities, settings } = useApp();
@@ -26,7 +27,7 @@ const Calendar = ({ onDayClick }) => {
     };
 
     const prevMonth = () => {
-        setCurrentMonth(prev => subMonths(prev, -1));
+        setCurrentMonth(prev => subMonths(prev, 1)); // Corregido: subMonths(prev, 1)
     };
 
     const monthStart = startOfMonth(currentMonth);
@@ -37,8 +38,7 @@ const Calendar = ({ onDayClick }) => {
 
     return (
         <div className="relative group/calendar">
-            <div className="glass-card overflow-hidden relative">
-                {/* Pasamos currentMonth como prop */}
+            <div className="glass-card overflow-hidden relative max-w-4xl mx-auto">
                 <CalendarWatermark currentMonth={currentMonth} />
 
                 <CalendarHeader
@@ -79,6 +79,8 @@ const Calendar = ({ onDayClick }) => {
                     </AnimatePresence>
                 </div>
             </div>
+
+            <CalendarToolbar />
         </div>
     );
 };
