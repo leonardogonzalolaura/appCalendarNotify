@@ -20,8 +20,12 @@ const NotificationManager = () => {
         if (activity.status === 'pending') {
           const activityTime = parseISO(activity.date);
           
-          // If the time has arrived
+          // DIAGNOSTIC LOG (You can see this in browser console)
+          // console.log(`Checking: ${activity.title} | Time: ${activityTime.toLocaleTimeString()} | Now: ${now.toLocaleTimeString()} | Past? ${isPast(activityTime)}`);
+
+          // If the time has arrived and we are not already showing a notification
           if (isPast(activityTime) && !settings.showNotification) {
+            console.log("TRIGGERING NOTIFICATION FOR:", activity.title);
             
             // 1. Show the internal blocking UI
             updateSettings({ 
@@ -32,19 +36,20 @@ const NotificationManager = () => {
             // 2. Show System Notification (Banner)
             if ('Notification' in window && Notification.permission === 'granted') {
               try {
-                const notification = new Notification(`¡AgendaPro: ${activity.title}!`, {
-                  body: "Haz clic para ver detalles, marcar como hecha o posponer (5m, 15m, 30m o tiempo personalizado).",
-                  icon: settings.popupCharacter === 'hellokitty' 
-                    ? 'https://img.icons8.com/color/96/hello-kitty.png' 
-                    : 'https://img.icons8.com/fluency/96/appointment-reminders.png',
-                  tag: activity.id.toString(), // Ensures only one notification per activity ID
-                  requireInteraction: true
-                });
-
-                notification.onclick = () => {
-                  window.focus();
-                  notification.close();
+                const charIcons = {
+                  'hellokitty': '/src/assets/img/kellokitty001.png',
+                  'pikachu': '/src/assets/img/pikachu.png',
+                  'snoppy': '/src/assets/img/snoppy.png',
+                  'dragonair': '/src/assets/img/dragonair.png',
+                  'squirtle': '/src/assets/img/squirtle.png'
                 };
+
+                new Notification(`¡AgendaPro: ${activity.title}!`, {
+                  body: "Haz clic para ver detalles.",
+                  icon: charIcons[activity.characterId] || '/src/assets/img/kellokitty001.png',
+                  tag: activity.id.toString(), 
+                  requireInteraction: true
+                }).onclick = () => { window.focus(); };
               } catch (err) {
                 console.error("Error showing notification:", err);
               }
@@ -52,10 +57,10 @@ const NotificationManager = () => {
           }
         }
       });
-    }, 5000);
+    }, 2000); // Check more frequently (every 2s)
 
     return () => clearInterval(interval);
-  }, [activities, settings.showNotification, settings.popupCharacter]);
+  }, [activities, settings.showNotification]);
 
   return null;
 };

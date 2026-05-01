@@ -38,7 +38,8 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
       date: activityDate.toISOString(),
       notifyCount,
       characterId: selectedChar,
-      remindersLeft: notifyCount
+      remindersLeft: notifyCount,
+      status: 'pending'
     });
 
     setTitle('');

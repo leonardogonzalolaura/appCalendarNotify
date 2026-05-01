@@ -26,11 +26,12 @@ const BlockingPopup = () => {
   };
 
   const characters = [
+    { id: 'hellokitty', name: 'Hello Kitty', img: '/src/assets/img/kellokitty001.png' },
+    { id: 'pikachu', name: 'Pikachu', img: '/src/assets/img/pikachu.png' },
+    { id: 'snoppy', name: 'Snoopy', img: '/src/assets/img/snoppy.png' },
+    { id: 'dragonair', name: 'Dragonair', img: '/src/assets/img/dragonair.png' },
+    { id: 'squirtle', name: 'Squirtle', img: '/src/assets/img/squirtle.png' },
     { id: 'default', name: 'Alerta', img: 'https://img.icons8.com/fluency/96/appointment-reminders.png' },
-    { id: 'hellokitty', name: 'Hello Kitty', img: 'https://img.icons8.com/color/512/hello-kitty.png' },
-    { id: 'pikachu', name: 'Pikachu', img: 'https://img.icons8.com/color/512/pikachu.png' },
-    { id: 'doraemon', name: 'Doraemon', img: 'https://img.icons8.com/color/512/doraemon.png' },
-    { id: 'stitch', name: 'Stitch', img: 'https://img.icons8.com/color/512/stitch.png' },
   ];
 
   const character = characters.find(c => c.id === (activity.characterId || settings.popupCharacter)) || characters[0];
@@ -92,9 +93,18 @@ const BlockingPopup = () => {
               </button>
 
               <div className="grid grid-cols-4 gap-2">
-                <SnoozeButton mins={5} label="+5m" onClick={() => postponeActivity(activity.id, 5)} />
-                <SnoozeButton mins={15} label="+15m" onClick={() => postponeActivity(activity.id, 15)} />
-                <SnoozeButton mins={30} label="+30m" onClick={() => postponeActivity(activity.id, 30)} />
+                <SnoozeButton mins={5} label="+5m" onClick={() => {
+                  postponeActivity(activity.id, 5);
+                  updateSettings({ showNotification: false, currentNotification: null });
+                }} />
+                <SnoozeButton mins={15} label="+15m" onClick={() => {
+                  postponeActivity(activity.id, 15);
+                  updateSettings({ showNotification: false, currentNotification: null });
+                }} />
+                <SnoozeButton mins={30} label="+30m" onClick={() => {
+                  postponeActivity(activity.id, 30);
+                  updateSettings({ showNotification: false, currentNotification: null });
+                }} />
                 <button
                   onClick={() => setIsCustomOpen(true)}
                   className="py-3 rounded-xl border border-border text-xs font-bold hover:bg-primary/5 hover:border-primary transition-all flex flex-col items-center justify-center"
