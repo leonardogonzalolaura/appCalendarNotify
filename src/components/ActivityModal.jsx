@@ -15,11 +15,12 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
   const [selectedChar, setSelectedChar] = useState(settings.popupCharacter || 'hellokitty');
 
   const characters = [
+    { id: 'hellokitty', name: 'Hello Kitty', img: '/src/assets/img/kellokitty001.png' },
+    { id: 'pikachu', name: 'Pikachu', img: '/src/assets/img/pikachu.png' },
+    { id: 'snoppy', name: 'Snoopy', img: '/src/assets/img/snoppy.png' },
+    { id: 'dragonair', name: 'Dragonair', img: '/src/assets/img/dragonair.png' },
+    { id: 'squirtle', name: 'Squirtle', img: '/src/assets/img/squirtle.png' },
     { id: 'default', name: 'Alerta', img: 'https://img.icons8.com/fluency/96/appointment-reminders.png' },
-    { id: 'hellokitty', name: 'Hello Kitty', img: 'https://img.icons8.com/color/96/hello-kitty.png' },
-    { id: 'pikachu', name: 'Pikachu', img: 'https://img.icons8.com/?size=512&id=13661&format=png' },
-    { id: 'doraemon', name: 'Doraemon', img: 'https://img.icons8.com/?size=512&id=21617&format=png' },
-    { id: 'stitch', name: 'Stitch', img: 'https://img.icons8.com/?size=512&id=37604&format=png' },
   ];
 
   const dayActivities = activities.filter(a => isSameDay(new Date(a.date), selectedDate));
@@ -85,9 +86,9 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
                   </div>
                 ) : (
                   dayActivities.map((activity) => (
-                    <motion.div 
+                    <motion.div
                       layout
-                      key={activity.id} 
+                      key={activity.id}
                       className="p-4 rounded-2xl bg-surface border border-border flex items-center justify-between group transition-all hover:border-primary/20"
                     >
                       <div>
@@ -111,11 +112,11 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
                 )}
               </div>
             ) : (
-              <motion.form 
+              <motion.form
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                onSubmit={handleSubmit} 
-                className="space-y-6 pt-2"
+                onSubmit={handleSubmit}
+                className="space-y-4 pt-2"
               >
                 <div className="space-y-2">
                   <label className="text-xs font-bold flex items-center gap-2 text-muted uppercase tracking-wider">
@@ -164,38 +165,38 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
 
                 <div className="space-y-3">
                   <label className="text-xs font-bold text-muted uppercase tracking-wider">Personaje de Notificación</label>
-                  <div className="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
+                  <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar -mx-2 px-2">
                     {characters.map(char => (
                       <button
                         key={char.id}
                         type="button"
                         onClick={() => setSelectedChar(char.id)}
                         className={`
-                          flex-shrink-0 p-2 rounded-xl border-2 transition-all flex flex-col items-center gap-1
+                          flex-shrink-0 size-16 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-1
                           ${selectedChar === char.id ? 'border-primary bg-primary/5 scale-105' : 'border-border grayscale opacity-60 hover:opacity-100'}
                         `}
                       >
-                        <img src={char.img} alt={char.name} className="size-10 object-contain" />
-                        <span className="text-[10px] font-bold">{char.name}</span>
+                        <img src={char.img} alt={char.name} className="size-8 object-contain" />
+                        <span className="text-[8px] font-bold truncate w-full px-1">{char.name}</span>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                <div className="flex gap-3 pt-2">
+                <div className="flex gap-3 pt-4 mt-2">
                   <button
                     type="button"
                     onClick={() => setView('list')}
                     className="flex-1 p-3 border border-border rounded-xl hover:bg-surface transition-colors text-sm font-bold"
                   >
-                    Volver al Listado
+                    Volver
                   </button>
                   <button
                     type="submit"
                     className="flex-1 btn-primary flex items-center justify-center gap-2 text-sm font-bold"
                   >
                     <Save size={18} />
-                    Guardar Tarea
+                    Guardar
                   </button>
                 </div>
               </motion.form>

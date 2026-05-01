@@ -45,22 +45,53 @@ const Calendar = ({ onDayClick }) => {
   ];
 
   return (
-    <div className="glass-card overflow-hidden">
-      {/* Header with Navigation and Personalization */}
-      <div className="flex flex-col md:flex-row items-center justify-between p-6 gap-4 border-b border-border bg-surface/30">
-        <div className="flex items-center gap-6">
-          <h2 className="text-2xl font-black capitalize">
-            {format(currentMonth, 'MMMM yyyy', { locale: es })}
-          </h2>
-          <div className="flex gap-1 bg-surface p-1 rounded-xl border border-border shadow-sm">
-            <button onClick={prevMonth} className="p-2 hover:bg-background rounded-lg transition-colors">
-              <ChevronLeft size={20} />
-            </button>
-            <button onClick={nextMonth} className="p-2 hover:bg-background rounded-lg transition-colors">
-              <ChevronRight size={20} />
-            </button>
+    <div className="relative group/calendar">
+      {/* Floating Mascot (Outside overflow-hidden to prevent clipping) */}
+      <motion.div
+        animate={{ 
+          y: [0, -8, 0],
+          rotate: [0, -5, 5, 0]
+        }}
+        transition={{ 
+          duration: 4, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+        whileHover={{ scale: 1.1, rotate: 10 }}
+        className="absolute -top-8 -left-2 z-50 pointer-events-none sm:pointer-events-auto size-16 md:size-20"
+      >
+        <img 
+          src={
+            {
+              'hellokitty': '/src/assets/img/kellokitty001.png',
+              'pikachu': '/src/assets/img/pikachu.png',
+              'snoppy': '/src/assets/img/snoppy.png',
+              'dragonair': '/src/assets/img/dragonair.png',
+              'squirtle': '/src/assets/img/squirtle.png',
+              'default': 'https://img.icons8.com/fluency/96/appointment-reminders.png'
+            }[settings.popupCharacter] || '/src/assets/img/kellokitty001.png'
+          } 
+          alt="Mascot" 
+          className="w-full h-full object-contain drop-shadow-xl"
+        />
+      </motion.div>
+
+      <div className="glass-card overflow-hidden">
+        {/* Header with Navigation and Personalization */}
+        <div className="flex flex-col md:flex-row items-center justify-between p-6 gap-4 border-b border-border bg-surface/30 pl-20 md:pl-24">
+          <div className="flex items-center gap-6">
+            <h2 className="text-2xl font-black capitalize">
+              {format(currentMonth, 'MMMM yyyy', { locale: es })}
+            </h2>
+            <div className="flex gap-1 bg-surface p-1 rounded-xl border border-border shadow-sm">
+              <button onClick={prevMonth} className="p-2 hover:bg-background rounded-lg transition-colors">
+                <ChevronLeft size={20} />
+              </button>
+              <button onClick={nextMonth} className="p-2 hover:bg-background rounded-lg transition-colors">
+                <ChevronRight size={20} />
+              </button>
+            </div>
           </div>
-        </div>
 
         {/* Floating Customizer Toolbar */}
         <div className="flex items-center gap-4 bg-surface p-2 px-4 rounded-2xl border border-border shadow-lg">
@@ -145,7 +176,8 @@ const Calendar = ({ onDayClick }) => {
         })}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Calendar;

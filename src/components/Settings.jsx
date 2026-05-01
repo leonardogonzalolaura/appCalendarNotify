@@ -15,11 +15,12 @@ const Settings = () => {
   ];
 
   const characters = [
+    { id: 'hellokitty', name: 'Hello Kitty', img: '/src/assets/img/kellokitty001.png' },
+    { id: 'pikachu', name: 'Pikachu', img: '/src/assets/img/pikachu.png' },
+    { id: 'snoppy', name: 'Snoopy', img: '/src/assets/img/snoppy.png' },
+    { id: 'dragonair', name: 'Dragonair', img: '/src/assets/img/dragonair.png' },
+    { id: 'squirtle', name: 'Squirtle', img: '/src/assets/img/squirtle.png' },
     { id: 'default', name: 'Alerta', img: 'https://img.icons8.com/fluency/96/appointment-reminders.png' },
-    { id: 'hellokitty', name: 'Hello Kitty', img: 'https://img.icons8.com/color/96/hello-kitty.png' },
-    { id: 'pikachu', name: 'Pikachu', img: 'https://img.icons8.com/color/96/pikachu.png' },
-    { id: 'doraemon', name: 'Doraemon', img: 'https://img.icons8.com/color/96/doraemon.png' },
-    { id: 'stitch', name: 'Stitch', img: 'https://img.icons8.com/color/96/stitch.png' },
   ];
 
   return (
