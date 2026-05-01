@@ -22,7 +22,7 @@ const Signup = ({ onToggleMode }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       className="glass-card p-8 w-full max-w-md mx-auto"
@@ -38,49 +38,53 @@ const Signup = ({ onToggleMode }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative">
-          <User className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5" />
-          <input 
-            type="text" 
-            placeholder="Nombre completo" 
-            className="w-full pl-10"
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5 z-10" />
+          <input
+            type="text"
+            placeholder="Nombre completo"
+            className="w-full rounded-xl border-2 border-border bg-background focus:border-primary transition-all"
+            style={{ paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}
             value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           />
         </div>
 
         <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5" />
-          <input 
-            type="email" 
-            placeholder="Correo electrónico" 
-            className="w-full pl-10"
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5 z-10" />
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            className="w-full rounded-xl border-2 border-border bg-background focus:border-primary transition-all"
+            style={{ paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}
             value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
         </div>
 
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5" />
-          <input 
-            type="password" 
-            placeholder="Contraseña" 
-            className="w-full pl-10"
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5 z-10" />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            className="w-full rounded-xl border-2 border-border bg-background focus:border-primary transition-all"
+            style={{ paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}
             value={formData.password}
-            onChange={(e) => setFormData({...formData, password: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             required
           />
         </div>
 
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5" />
-          <input 
-            type="password" 
-            placeholder="Confirmar contraseña" 
-            className="w-full pl-10"
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5 z-10" />
+          <input
+            type="password"
+            placeholder="Confirmar contraseña"
+            className="w-full rounded-xl border-2 border-border bg-background focus:border-primary transition-all"
+            style={{ paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}
             value={formData.confirmPassword}
-            onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
             required
           />
         </div>

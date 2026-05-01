@@ -9,7 +9,6 @@ const colors = [
     { name: 'Emerald', value: '#10b981' },
     { name: 'Amber', value: '#f59e0b' },
     { name: 'Violet', value: '#8b5cf6' },
-    { name: 'Teal', value: '#14b8a6' },
     { name: 'Pink', value: '#f787bfff' },
     { name: 'Orange', value: '#f97316' },
 ];
@@ -20,14 +19,6 @@ const CalendarToolbar = () => {
 
     return (
         <>
-            {/* Botón flotante para mostrar/ocultar en móvil */}
-            <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="fixed right-4 top-2 z-50 md:hidden bg-surface/90 backdrop-blur-xl p-3 rounded-full border border-border shadow-lg"
-            >
-                <Palette size={10} className="text-muted" />
-            </button>
-
             {/* Toolbar principal */}
             <AnimatePresence>
                 {(isExpanded || window.innerWidth >= 768) && (

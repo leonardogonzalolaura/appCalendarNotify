@@ -14,7 +14,7 @@ const Login = ({ onToggleMode }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="glass-card p-8 w-full max-w-md mx-auto"
@@ -26,30 +26,32 @@ const Login = ({ onToggleMode }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5" />
-          <input 
-            type="email" 
-            placeholder="Correo electrónico" 
-            className="w-full pl-10"
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5 z-10" />
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            className="input-with-icon w-full"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={{ paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}
             required
           />
         </div>
 
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5" />
-          <input 
-            type="password" 
-            placeholder="Contraseña" 
-            className="w-full pl-10"
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5 z-10" />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            className="input-with-icon w-full"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            style={{ paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}
             required
           />
         </div>
 
-        <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2">
+        <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2 py-3">
           <LogIn size={20} />
           Iniciar Sesión
         </button>
@@ -57,11 +59,11 @@ const Login = ({ onToggleMode }) => {
 
       <div className="mt-6">
         <div className="relative flex items-center justify-center mb-6">
-          <div className="border-t border-border w-full"></div>
-          <span className="bg-surface px-4 text-sm text-muted absolute">O continúa con</span>
+
+          <span className="px-4 text-sm text-muted absolute">O continúa con</span>
         </div>
 
-        <button 
+        <button
           onClick={loginWithGoogle}
           className="w-full flex items-center justify-center gap-2 border border-border p-3 rounded-xl hover:bg-surface transition-colors"
         >

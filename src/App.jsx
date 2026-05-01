@@ -4,7 +4,7 @@ import { useApp } from './context/AppContext';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Calendar from './components/Calendar/Calendar';
-import ActivityModal from './components/ActivityModal';
+import ActivityModal from './components/ActivityModal/ActivityModal';
 import NotificationManager from './components/NotificationManager';
 import BlockingPopup from './components/BlockingPopup';
 import Settings from './components/Settings';
