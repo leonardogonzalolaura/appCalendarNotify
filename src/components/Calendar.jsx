@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  format, 
-  addMonths, 
-  subMonths, 
-  startOfMonth, 
-  endOfMonth, 
-  startOfWeek, 
-  endOfWeek, 
-  isSameMonth, 
-  isSameDay, 
-  addDays, 
-  eachDayOfInterval 
+import {
+  format,
+  addMonths,
+  subMonths,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  isSameMonth,
+  isSameDay,
+  addDays,
+  eachDayOfInterval
 } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight, Plus, Bell, Sun, Moon } from 'lucide-react';
@@ -37,6 +37,11 @@ const Calendar = ({ onDayClick }) => {
     { name: 'Emerald', value: '#10b981' },
     { name: 'Amber', value: '#f59e0b' },
     { name: 'Violet', value: '#8b5cf6' },
+    { name: 'Teal', value: '#14b8a6' },
+    { name: 'Pink', value: '#f787bfff' },
+    { name: 'Orange', value: '#f97316' },
+
+
   ];
 
   return (
@@ -59,20 +64,20 @@ const Calendar = ({ onDayClick }) => {
 
         {/* Floating Customizer Toolbar */}
         <div className="flex items-center gap-4 bg-surface p-2 px-4 rounded-2xl border border-border shadow-lg">
-           <div className="flex gap-1.5">
-              {colors.map(c => (
-                <button 
-                  key={c.value} 
-                  onClick={() => updateSettings({ calendarColor: c.value, primaryColor: c.value })}
-                  className={`size-5 rounded-full border-2 transition-all ${settings.calendarColor === c.value ? 'border-text scale-110' : 'border-transparent opacity-60 hover:opacity-100'}`}
-                  style={{ backgroundColor: c.value }}
-                />
-              ))}
-           </div>
-           <div className="h-6 w-px bg-border" />
-           <button onClick={toggleTheme} className="p-2 hover:bg-background rounded-lg">
-              {theme === 'dark' ? <Sun size={18} className="text-amber-500" /> : <Moon size={18} />}
-           </button>
+          <div className="flex gap-1.5">
+            {colors.map(c => (
+              <button
+                key={c.value}
+                onClick={() => updateSettings({ calendarColor: c.value, primaryColor: c.value })}
+                className={`size-5 rounded-full border-2 transition-all ${settings.calendarColor === c.value ? 'border-text scale-110' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                style={{ backgroundColor: c.value }}
+              />
+            ))}
+          </div>
+          <div className="h-6 w-px bg-border" />
+          <button onClick={toggleTheme} className="p-2 hover:bg-background rounded-lg">
+            {theme === 'dark' ? <Sun size={18} className="text-amber-500" /> : <Moon size={18} />}
+          </button>
         </div>
       </div>
 
@@ -108,15 +113,15 @@ const Calendar = ({ onDayClick }) => {
                   size-8 flex items-center justify-center rounded-full text-sm font-bold
                   ${isToday ? 'text-white' : ''}
                 `}
-                style={{ backgroundColor: isToday ? settings.calendarColor : 'transparent' }}>
+                  style={{ backgroundColor: isToday ? settings.calendarColor : 'transparent' }}>
                   {format(day, 'd')}
                 </span>
                 {dayActivities.length > 0 && (
                   <div className="flex -space-x-1">
                     {dayActivities.slice(0, 3).map((_, i) => (
-                      <div 
-                        key={i} 
-                        className="size-2 rounded-full border border-surface" 
+                      <div
+                        key={i}
+                        className="size-2 rounded-full border border-surface"
                         style={{ backgroundColor: settings.calendarColor }}
                       />
                     ))}
@@ -126,8 +131,8 @@ const Calendar = ({ onDayClick }) => {
 
               <div className="space-y-1 flex-1 overflow-hidden">
                 {dayActivities.slice(0, 3).map((activity) => (
-                  <div 
-                    key={activity.id} 
+                  <div
+                    key={activity.id}
                     className="text-[10px] p-1 px-2 rounded bg-surface border-l-2 truncate font-bold"
                     style={{ borderLeftColor: settings.calendarColor }}
                   >

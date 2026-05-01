@@ -27,13 +27,24 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('settings', JSON.stringify(settings));
     if (settings.primaryColor) {
       document.documentElement.style.setProperty('--primary', settings.primaryColor);
+      
+      // Extract RGB for transparent effects
+      const hex = settings.primaryColor.replace('#', '');
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      document.documentElement.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
     }
   }, [settings]);
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
   const addActivity = (activity) => {
-    setActivities(prev => [...prev, { ...activity, id: Date.now(), status: 'pending' }]);
+    setActivities(prev => [...prev, { 
+      id: activity.id || crypto.randomUUID(), 
+      status: 'pending',
+      ...activity 
+    }]);
   };
 
   const updateActivity = (id, updates) => {
