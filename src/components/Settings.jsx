@@ -4,7 +4,7 @@ import { useApp } from '../context/AppContext';
 import { motion } from 'framer-motion';
 
 const Settings = () => {
-  const { theme, toggleTheme, settings, updateSettings } = useApp();
+  const { theme, toggleTheme, settings, updateSettings, characters } = useApp();
 
   const colors = [
     { name: 'Indigo', value: '#6366f1' },
@@ -14,17 +14,9 @@ const Settings = () => {
     { name: 'Violet', value: '#8b5cf6' },
   ];
 
-  const characters = [
-    { id: 'hellokitty', name: 'Hello Kitty', img: '/src/assets/img/kellokitty001.png' },
-    { id: 'pikachu', name: 'Pikachu', img: '/src/assets/img/pikachu.png' },
-    { id: 'snoppy', name: 'Snoopy', img: '/src/assets/img/snoppy.png' },
-    { id: 'dragonair', name: 'Dragonair', img: '/src/assets/img/dragonair.png' },
-    { id: 'squirtle', name: 'Squirtle', img: '/src/assets/img/squirtle.png' },
-    { id: 'default', name: 'Alerta', img: 'https://img.icons8.com/fluency/96/appointment-reminders.png' },
-  ];
-
   return (
     <div className="space-y-8 animate-fade">
+      {/* Appearance Section */}
       <section>
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
           <Palette size={20} className="text-primary" /> Apariencia
@@ -51,6 +43,7 @@ const Settings = () => {
         </div>
       </section>
 
+      {/* Colors Sections */}
       <section>
         <h3 className="text-lg font-bold mb-4">Color de Acentos (Botones)</h3>
         <div className="flex gap-4">
@@ -83,6 +76,7 @@ const Settings = () => {
         </div>
       </section>
 
+      {/* Notifications Section */}
       <section>
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
           <BellRing size={20} className="text-primary" /> Notificaciones de Sistema
@@ -106,9 +100,10 @@ const Settings = () => {
           </div>
           <button 
             onClick={() => {
+              const char = characters.find(c => c.id === settings.popupCharacter) || characters[0];
               new Notification("¡Prueba de AgendaPro!", { 
                 body: "Si ves esto, las notificaciones de sistema están funcionando correctamente.",
-                icon: "https://img.icons8.com/color/96/hello-kitty.png"
+                icon: char.img
               });
             }}
             className="w-full py-2 border border-border rounded-lg text-sm font-bold hover:bg-surface transition-colors"
@@ -118,11 +113,12 @@ const Settings = () => {
         </div>
       </section>
 
+      {/* Characters Section */}
       <section>
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
           <ImageIcon size={20} className="text-primary" /> Personaje de Notificación
         </h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {characters.map(char => (
             <button
               key={char.id}
@@ -133,7 +129,7 @@ const Settings = () => {
               `}
             >
               <img src={char.img} alt={char.name} className="size-16 object-contain" />
-              <span className="font-bold">{char.name}</span>
+              <span className="font-bold text-xs text-center">{char.name}</span>
             </button>
           ))}
         </div>

@@ -4,7 +4,7 @@ import { CheckCircle, AlertTriangle, BellRing } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const BlockingPopup = () => {
-  const { settings, updateSettings, updateActivity, postponeActivity } = useApp();
+  const { settings, updateSettings, updateActivity, postponeActivity, characters } = useApp();
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -24,15 +24,6 @@ const BlockingPopup = () => {
     updateActivity(activity.id, { status: 'completed' });
     updateSettings({ showNotification: false, currentNotification: null });
   };
-
-  const characters = [
-    { id: 'hellokitty', name: 'Hello Kitty', img: '/src/assets/img/kellokitty001.png' },
-    { id: 'pikachu', name: 'Pikachu', img: '/src/assets/img/pikachu.png' },
-    { id: 'snoppy', name: 'Snoopy', img: '/src/assets/img/snoppy.png' },
-    { id: 'dragonair', name: 'Dragonair', img: '/src/assets/img/dragonair.png' },
-    { id: 'squirtle', name: 'Squirtle', img: '/src/assets/img/squirtle.png' },
-    { id: 'default', name: 'Alerta', img: 'https://img.icons8.com/fluency/96/appointment-reminders.png' },
-  ];
 
   const character = characters.find(c => c.id === (activity.characterId || settings.popupCharacter)) || characters[0];
 

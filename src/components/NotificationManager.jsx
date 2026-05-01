@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { isPast, parseISO } from 'date-fns';
 
 const NotificationManager = () => {
-  const { activities, updateActivity, settings, updateSettings } = useApp();
+  const { activities, updateActivity, settings, updateSettings, characters } = useApp();
 
   // Request notification permission on mount
   useEffect(() => {
@@ -36,17 +36,11 @@ const NotificationManager = () => {
             // 2. Show System Notification (Banner)
             if ('Notification' in window && Notification.permission === 'granted') {
               try {
-                const charIcons = {
-                  'hellokitty': '/src/assets/img/kellokitty001.png',
-                  'pikachu': '/src/assets/img/pikachu.png',
-                  'snoppy': '/src/assets/img/snoppy.png',
-                  'dragonair': '/src/assets/img/dragonair.png',
-                  'squirtle': '/src/assets/img/squirtle.png'
-                };
+                const char = characters.find(c => c.id === activity.characterId) || characters[0];
 
                 new Notification(`¡AgendaPro: ${activity.title}!`, {
                   body: "Haz clic para ver detalles.",
-                  icon: charIcons[activity.characterId] || '/src/assets/img/kellokitty001.png',
+                  icon: char.img,
                   tag: activity.id.toString(), 
                   requireInteraction: true
                 }).onclick = () => { window.focus(); };

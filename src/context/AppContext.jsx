@@ -2,6 +2,31 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AppContext = createContext();
 
+// Dynamic Character Loader
+const characterImages = import.meta.glob('../assets/img/*.{png,jpg,jpeg,svg}', { eager: true });
+const dynamicCharacters = Object.entries(characterImages).map(([path, module]) => {
+  const fileName = path.split('/').pop();
+  const id = fileName.split('.')[0];
+  // Format name: "mario001" -> "Mario", "hello-kitty" -> "Hello Kitty"
+  const name = id
+    .replace(/[0-9]/g, '')
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, l => l.toUpperCase())
+    .trim();
+    
+  return {
+    id,
+    name: name || id,
+    img: module.default
+  };
+});
+
+// Add default alert icon
+const charactersList = [
+  ...dynamicCharacters,
+  { id: 'default', name: 'Alerta', img: 'https://img.icons8.com/fluency/96/appointment-reminders.png' }
+];
+
 export const AppProvider = ({ children }) => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [activities, setActivities] = useState(JSON.parse(localStorage.getItem('activities')) || []);
@@ -74,7 +99,8 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider value={{ 
       theme, toggleTheme, 
       activities, addActivity, updateActivity, deleteActivity, postponeActivity,
-      settings, updateSettings 
+      settings, updateSettings,
+      characters: charactersList
     }}>
       {children}
     </AppContext.Provider>
