@@ -24,6 +24,7 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: https://appcalendar.atechlo.com/api
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
 
       - name: 🚀 Deploy frontend to Lightsail
         uses: appleboy/scp-action@v0.1.7
