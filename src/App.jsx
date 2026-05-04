@@ -28,7 +28,7 @@ function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   if (loading) return (
-    <div className="h-screen w-screen flex items-center justify-center bg-background">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-background">
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
@@ -61,7 +61,7 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen bg-background text-text overflow-hidden">
+    <div className="flex min-h-screen bg-background">
       {/* Sidebar */}
       <aside className="w-16 md:w-64 border-r border-border bg-surface flex flex-col p-2 md:p-4 z-40">
         <div className="mb-10 flex items-center gap-3 px-2">

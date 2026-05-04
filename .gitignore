@@ -28,8 +28,12 @@ dist-ssr
 *.db
 server/database.sqlite
 server/*.sqlite
+**/.env
+**/.env.*
 
 
 # OS
 .DS_Store
 Thumbs.db
+.env
+.env.local

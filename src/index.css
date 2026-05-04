@@ -45,6 +45,12 @@ body {
   overflow-x: hidden;
 }
 
+@media (min-width: 1024px) {
+  body {
+    zoom: 0.75;
+  }
+}
+
 button {
   cursor: pointer;
   border: none;
