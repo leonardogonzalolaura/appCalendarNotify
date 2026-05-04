@@ -24,36 +24,44 @@ const CharacterDropdown = ({ isOpen, position, characters, selectedChar, onSelec
                 }}
             >
                 <div className="p-2">
-                    <p className="text-[10px] font-bold text-muted px-3 py-2 uppercase tracking-widest border-b border-border mb-1 sticky top-0 bg-surface">
+                    <p className="text-[10px] font-bold text-muted px-3 py-2 uppercase tracking-widest border-b border-border mb-2 sticky top-0 bg-surface">
                         Elige un personaje
                     </p>
-                    {characters.map(char => (
-                        <button
-                            key={char.id}
-                            type="button"
-                            onClick={() => {
-                                onSelect(char.id);
-                                onClose();
-                            }}
-                            className={`
-                flex items-center gap-4 p-3 rounded-xl border transition-all w-full mb-1
-                ${selectedChar === char.id
-                                    ? 'border-primary bg-primary/5'
-                                    : 'border-transparent hover:bg-background hover:border-border'
-                                }
-              `}
-                        >
-                            <img src={char.img} alt={char.name} className="size-10 object-contain" />
-                            <div className="text-left flex-1">
-                                <span className="text-sm font-bold block">{char.name}</span>
-                                <span className="text-[10px] text-muted capitalize">{char.id.replace(/[0-9]/g, '')}</span>
-                            </div>
-                            {selectedChar === char.id && (
-                                <div className="size-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                                    <Check size={12} className="text-white" />
+                    {characters.map((char, index) => (
+                        <React.Fragment key={char.id}>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    onSelect(char.id);
+                                    onClose();
+                                }}
+                                className="
+                                    flex items-center gap-4 p-3 w-full text-left
+                                    bg-transparent outline-none ring-0
+                                    hover:bg-background/30 transition-colors
+                                "
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    border: 'none',
+                                    boxShadow: 'none'
+                                }}
+                            >
+                                <img src={char.img} alt={char.name} className="size-10 object-contain" />
+                                <div className="text-left flex-1">
+                                    <span className={`text-sm font-bold block ${selectedChar === char.id ? 'text-primary' : ''}`}>
+                                        {char.name}
+                                    </span>
                                 </div>
+                                {selectedChar === char.id && (
+                                    <div className="size-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                        <Check size={12} className="text-white" />
+                                    </div>
+                                )}
+                            </button>
+                            {index < characters.length - 1 && (
+                                <div className="border-b border-border/40 my-1" />
                             )}
-                        </button>
+                        </React.Fragment>
                     ))}
                 </div>
             </motion.div>

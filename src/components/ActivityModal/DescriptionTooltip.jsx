@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const DescriptionTooltip = ({ description, children }) => {
@@ -38,6 +37,34 @@ const DescriptionTooltip = ({ description, children }) => {
         return <>{children}</>;
     }
 
+    const tooltipContent = (
+        <motion.div
+            initial={{ opacity: 0, y: -5, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -5, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            style={{
+                position: 'fixed',
+                top: position.top - 5,
+                left: position.left,
+                transform: 'translateX(-50%) translateY(-100%)',
+                zIndex: 100000,
+                pointerEvents: 'none'
+            }}
+        >
+            <div className="bg-surface border border-border rounded-xl shadow-2xl p-3 max-w-xs relative">
+                <div className="text-xs text-text">
+                    <p className="font-bold mb-1 text-primary text-xs">Descripción:</p>
+                    <p className="whitespace-pre-wrap break-words">{description}</p>
+                </div>
+                <div
+                    className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-surface border-r border-b border-border rotate-45"
+                    style={{ zIndex: 99999 }}
+                />
+            </div>
+        </motion.div>
+    );
+
     return (
         <>
             <div
@@ -50,28 +77,10 @@ const DescriptionTooltip = ({ description, children }) => {
             </div>
 
             <AnimatePresence>
-                {showTooltip && createPortal(
-                    <motion.div
-                        initial={{ opacity: 0, y: -5, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -5, scale: 0.95 }}
-                        transition={{ duration: 0.15 }}
-                        className="fixed z-[200]"
-                        style={{
-                            top: position.top - 5,
-                            left: position.left,
-                            transform: 'translateX(-50%) translateY(-100%)'
-                        }}
-                    >
-                        <div className="bg-surface border border-border rounded-xl shadow-2xl p-3 max-w-xs">
-                            <div className="text-xs text-text">
-                                <p className="font-bold mb-1 text-primary text-xs">Descripción:</p>
-                                <p className="whitespace-pre-wrap break-words">{description}</p>
-                            </div>
-                            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-surface border-r border-b border-border rotate-45" />
-                        </div>
-                    </motion.div>,
-                    document.body
+                {showTooltip && (
+                    <div style={{ position: 'relative', zIndex: 100000 }}>
+                        {tooltipContent}
+                    </div>
                 )}
             </AnimatePresence>
         </>

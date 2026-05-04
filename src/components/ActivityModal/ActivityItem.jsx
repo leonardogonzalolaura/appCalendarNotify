@@ -7,20 +7,19 @@ import DescriptionTooltip from './DescriptionTooltip';
 const ActivityItem = ({ activity, onDelete, onViewDetail }) => {
     const hasDescription = activity.description && activity.description.trim().length > 0;
 
-    // Truncar descripción a 100 caracteres
-    const truncatedDescription = hasDescription
-        ? activity.description.length > 10
-            ? activity.description.substring(0, 10) + '...'
-            : activity.description
-        : '';
-
     return (
         <motion.div
             layout
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="p-4 rounded-2xl bg-surface border border-border transition-all hover:border-primary/20"
+            className="p-4 bg-surface border-b border-border/50 transition-all hover:bg-background/30"
+            style={{
+                borderRadius: '0px',
+                borderLeft: 'none',
+                borderRight: 'none',
+                borderTop: 'none'
+            }}
         >
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -34,7 +33,13 @@ const ActivityItem = ({ activity, onDelete, onViewDetail }) => {
                     {hasDescription && (
                         <button
                             onClick={() => onViewDetail(activity)}
-                            className="p-2 text-muted hover:text-primary transition-all rounded-lg"
+                            className="p-1.5 text-muted hover:text-primary transition-all"
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                outline: 'none',
+                                borderRadius: '0px'
+                            }}
                             title="Ver detalles"
                         >
                             <Info size={16} />
@@ -42,7 +47,13 @@ const ActivityItem = ({ activity, onDelete, onViewDetail }) => {
                     )}
                     <button
                         onClick={() => onDelete(activity.id)}
-                        className="p-2 text-muted hover:text-red-500 transition-all rounded-lg"
+                        className="p-1.5 text-muted hover:text-red-500 transition-all"
+                        style={{
+                            background: 'transparent',
+                            border: 'none',
+                            outline: 'none',
+                            borderRadius: '0px'
+                        }}
                         title="Eliminar actividad"
                     >
                         <Trash2 size={18} />
@@ -52,8 +63,13 @@ const ActivityItem = ({ activity, onDelete, onViewDetail }) => {
 
             {hasDescription && (
                 <DescriptionTooltip description={activity.description}>
-                    <p className="text-xs text-muted pl-5 italic opacity-80 line-clamp-2 break-words cursor-pointer hover:text-primary transition-colors">
-                        {truncatedDescription}
+                    <p
+                        className="text-xs text-muted/70 pl-5 italic line-clamp-2 break-words cursor-pointer hover:text-primary transition-colors"
+                        style={{
+                            background: 'transparent',
+                            borderRadius: '0px'
+                        }}
+                    >
                     </p>
                 </DescriptionTooltip>
             )}
