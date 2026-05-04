@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Base de datos SQLite
+*.sqlite
+*.sqlite3
+*.db
+server/database.sqlite
+server/*.sqlite
+
+
+# OS
+.DS_Store
+Thumbs.db

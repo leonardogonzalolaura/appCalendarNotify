@@ -22,6 +22,8 @@ jobs:
 
       - name: 🏗️ Build frontend
         run: npm run build
+        env:
+          VITE_API_URL: https://appcalendar.atechlo.com/api
 
       - name: 🚀 Deploy frontend to Lightsail
         uses: appleboy/scp-action@v0.1.7
