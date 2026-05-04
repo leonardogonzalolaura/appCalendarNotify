@@ -92,7 +92,7 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="glass-card w-full max-w-lg p-8 relative flex flex-col max-h-[90vh] shadow-2xl"
+                        className="glass-card w-full max-w-lg p-4 md:p-8 relative flex flex-col max-h-[90vh] shadow-2xl"
                     >
                         <button
                             onClick={onClose}
@@ -101,10 +101,10 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
                             <X size={20} />
                         </button>
 
-                        <div className="mb-6 flex-shrink-0">
-                            <h2 className="text-2xl font-bold flex items-center gap-2">
+                        <div className="mb-4 md:mb-6 flex-shrink-0">
+                            <h2 className="text-lg md:text-2xl font-bold flex items-center gap-2">
                                 {view === 'list' ? <List className="text-primary" /> : <Plus className="text-primary" />}
-                                {view === 'list' ? 'Actividades del Día' : 'Agregar Nueva Actividad'}
+                                {view === 'list' ? 'Actividades del Día' : 'Nueva Actividad'}
                             </h2>
                             <p className="text-muted capitalize">
                                 {format(selectedDate, "eeee d 'de' MMMM", { locale: es })}
@@ -141,13 +141,13 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
                         </div>
 
                         {view === 'list' && (
-                            <div className="mt-6 pt-6 border-t border-border flex-shrink-0">
+                            <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-border flex-shrink-0">
                                 <button
                                     onClick={() => setView('add')}
-                                    className="w-full btn-primary flex items-center justify-center gap-2 py-4 text-sm font-bold"
+                                    className="w-full btn-primary flex items-center justify-center gap-2 py-3 md:py-4 text-sm font-bold"
                                 >
                                     <Plus size={20} />
-                                    Agregar Nueva Actividad
+                                    <span className="hidden sm:inline">Agregar Nueva </span>Actividad
                                 </button>
                             </div>
                         )}

@@ -21,7 +21,7 @@ const Settings = () => {
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
           <Palette size={20} className="text-primary" /> Apariencia
         </h3>
-        <div className="glass-card p-6 flex items-center justify-between">
+        <div className="glass-card p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <p className="font-medium">Modo Oscuro</p>
             <p className="text-sm text-muted">Cambia el estilo visual de la aplicación</p>
@@ -46,7 +46,7 @@ const Settings = () => {
       {/* Colors Sections */}
       <section>
         <h3 className="text-lg font-bold mb-4">Color de Acentos (Botones)</h3>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-3">
           {colors.map(color => (
             <button
               key={color.value}
@@ -62,7 +62,7 @@ const Settings = () => {
 
       <section>
         <h3 className="text-lg font-bold mb-4">Color del Calendario</h3>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-3">
           {colors.map(color => (
             <button
               key={`cal-${color.value}`}

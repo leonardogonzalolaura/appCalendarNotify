@@ -47,7 +47,35 @@ router.delete('/activities/:id', authenticateToken, (req, res) => {
 router.get('/settings', authenticateToken, (req, res) => {
   db.get('SELECT * FROM settings WHERE user_id = ?', [req.user.id], (err, row) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json(row || {});
+
+    if (row) {
+      // Existing settings — return as-is
+      return res.json(row);
+    }
+
+    // New user — insert defaults (pink + hellokitty) and return them
+    const defaults = {
+      user_id:        req.user.id,
+      logo:           null,
+      primaryColor:   '#f787bf',
+      calendarColor:  '#f787bf',
+      popupCharacter: 'hellokitty',
+      showNotification: 0
+    };
+
+    db.run(
+      `INSERT INTO settings (user_id, logo, primaryColor, calendarColor, popupCharacter, showNotification)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [defaults.user_id, defaults.logo, defaults.primaryColor, defaults.calendarColor, defaults.popupCharacter, defaults.showNotification],
+      function (insertErr) {
+        if (insertErr) {
+          // If insert fails, just return the in-memory defaults so the UI still works
+          console.error('Error creating default settings:', insertErr.message);
+          return res.json(defaults);
+        }
+        res.json(defaults);
+      }
+    );
   });
 });
 

@@ -6,7 +6,7 @@ import { es } from 'date-fns/locale';
 
 const CalendarHeader = ({ currentMonth, onPrevMonth, onNextMonth }) => {
     return (
-        <div className="flex items-center justify-between p-4 border-b border-border bg-surface/30 relative z-10">
+        <div className="flex items-center justify-between p-2 md:p-4 border-b border-border bg-surface/30 relative z-10">
             <button
                 onClick={onPrevMonth}
                 className="p-2 hover:bg-background rounded-lg transition-colors"

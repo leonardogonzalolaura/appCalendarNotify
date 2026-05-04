@@ -63,7 +63,7 @@ function App() {
   return (
     <div className="flex h-screen bg-background text-text overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-20 md:w-64 border-r border-border bg-surface flex flex-col p-4 z-40">
+      <aside className="w-16 md:w-64 border-r border-border bg-surface flex flex-col p-2 md:p-4 z-40">
         <div className="mb-10 flex items-center gap-3 px-2">
           <div className="size-10 bg-primary rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-primary/20">
             A
@@ -108,7 +108,7 @@ function App() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-20 border-b border-border flex items-center justify-between px-8 bg-surface/50 backdrop-blur-md">
+        <header className="h-16 md:h-20 border-b border-border flex items-center justify-between px-4 md:px-8 bg-surface/50 backdrop-blur-md">
           <h1 className="text-xl font-bold">
             {activeTab === 'calendar' ? 'Mi Calendario' : 'Configuración del Sistema'}
           </h1>
@@ -123,7 +123,7 @@ function App() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-3 md:p-8 custom-scrollbar">
           <div className="max-w-6xl mx-auto">
             <AnimatePresence mode="wait">
               {activeTab === 'calendar' ? (

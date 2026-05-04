@@ -38,7 +38,7 @@ const BlockingPopup = () => {
       <motion.div
         initial={{ scale: 0.5, opacity: 0, rotate: -10 }}
         animate={{ scale: 1, opacity: 1, rotate: 0 }}
-        className="glass-card max-w-lg w-full p-10 text-center relative overflow-hidden flex flex-col"
+        className="glass-card max-w-lg w-full p-5 md:p-10 text-center relative overflow-hidden flex flex-col"
         style={{ borderColor: 'var(--primary)', borderWidth: '2px' }}
       >
         <div className="absolute top-0 left-0 w-full h-2 bg-primary">
@@ -55,21 +55,21 @@ const BlockingPopup = () => {
           transition={{ duration: 2, repeat: Infinity }}
           className="mb-6 flex justify-center"
         >
-          <div className="bg-white p-4 rounded-full shadow-xl">
+          <div className="bg-white p-3 md:p-4 rounded-full shadow-xl">
             <img
               src={character.img}
               alt={character.name}
-              className="size-32 object-contain"
+              className="size-20 md:size-32 object-contain"
             />
           </div>
         </motion.div>
 
         <div className="mb-6">
-          <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm mb-4">
-            <BellRing size={16} /> ¡HORA DE LA ACTIVIDAD!
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs md:text-sm mb-3">
+            <BellRing size={14} /> ¡HORA DE LA ACTIVIDAD!
           </span>
-          <h2 className="text-4xl font-black mb-2">{activity.title}</h2>
-          <p className="text-lg text-muted">{activity.description || 'Es momento de cumplir con tu tarea.'}</p>
+          <h2 className="text-2xl md:text-4xl font-black mb-2">{activity.title}</h2>
+          <p className="text-sm md:text-lg text-muted">{activity.description || 'Es momento de cumplir con tu tarea.'}</p>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -77,7 +77,7 @@ const BlockingPopup = () => {
             <>
               <button
                 onClick={handleComplete}
-                className="w-full py-4 rounded-2xl bg-primary text-white text-xl font-bold flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform shadow-lg"
+                className="w-full py-3 md:py-4 rounded-2xl bg-primary text-white text-base md:text-xl font-bold flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform shadow-lg"
               >
                 <CheckCircle size={24} />
                 Marcar como Hecha
@@ -137,7 +137,7 @@ const BlockingPopup = () => {
           )}
         </div>
 
-        <div className="mt-8 text-xs text-muted bg-surface/50 p-3 rounded-xl">
+        <div className="mt-4 md:mt-8 text-xs text-muted bg-surface/50 p-3 rounded-xl">
           Esta pantalla está bloqueada hasta que confirmes la actividad o elijas un tiempo para posponer.
         </div>
       </motion.div>

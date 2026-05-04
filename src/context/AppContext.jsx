@@ -33,8 +33,8 @@ export const AppProvider = ({ children }) => {
   const [activities, setActivities] = useState([]);
   const [settings, setSettings] = useState({
     logo: null,
-    primaryColor: '#6366f1',
-    calendarColor: '#6366f1',
+    primaryColor: '#f787bf',
+    calendarColor: '#f787bf',
     popupCharacter: 'hellokitty',
     showNotification: false,
     currentNotification: null
