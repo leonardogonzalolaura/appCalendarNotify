@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { api } from '../api';
 
 const AuthContext = createContext();
 
@@ -8,43 +9,53 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem('app_user');
-    if (savedUser) {
+    const token = localStorage.getItem('app_token');
+    if (savedUser && token) {
       setUser(JSON.parse(savedUser));
     }
     setLoading(false);
   }, []);
 
-  const login = (email, password) => {
-    // Mock login logic
-    const mockUser = { email, name: email.split('@')[0], photo: null };
-    setUser(mockUser);
-    localStorage.setItem('app_user', JSON.stringify(mockUser));
-    return true;
+  const login = async (email, password) => {
+    try {
+      const { token, user } = await api.login(email, password);
+      setUser(user);
+      localStorage.setItem('app_user', JSON.stringify(user));
+      localStorage.setItem('app_token', token);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
   };
 
-  const loginWithGoogle = () => {
-    // Mock Google login
-    const mockUser = { 
-      email: 'user@gmail.com', 
-      name: 'Google User', 
-      photo: 'https://lh3.googleusercontent.com/a/default-user' 
-    };
-    setUser(mockUser);
-    localStorage.setItem('app_user', JSON.stringify(mockUser));
-    return true;
+  const loginWithGoogle = async (credential) => {
+    try {
+      const { token, user } = await api.googleLogin(credential);
+      setUser(user);
+      localStorage.setItem('app_user', JSON.stringify(user));
+      localStorage.setItem('app_token', token);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
   };
 
-  const signup = (userData) => {
-    // Mock signup logic
-    const newUser = { ...userData, photo: null };
-    setUser(newUser);
-    localStorage.setItem('app_user', JSON.stringify(newUser));
-    return true;
+  const signup = async (userData) => {
+    try {
+      const { token, user } = await api.signup(userData);
+      setUser(user);
+      localStorage.setItem('app_user', JSON.stringify(user));
+      localStorage.setItem('app_token', token);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('app_user');
+    localStorage.removeItem('app_token');
   };
 
   return (

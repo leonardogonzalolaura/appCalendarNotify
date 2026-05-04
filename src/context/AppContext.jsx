@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { api } from '../api';
+import { useAuth } from './AuthContext';
 
 const AppContext = createContext();
 
@@ -7,7 +9,6 @@ const characterImages = import.meta.glob('../assets/img/*.{png,jpg,jpeg,svg}', {
 const dynamicCharacters = Object.entries(characterImages).map(([path, module]) => {
   const fileName = path.split('/').pop();
   const id = fileName.split('.')[0];
-  // Format name: "mario001" -> "Mario", "hello-kitty" -> "Hello Kitty"
   const name = id
     .replace(/[0-9]/g, '')
     .replace(/[-_]/g, ' ')
@@ -21,23 +22,46 @@ const dynamicCharacters = Object.entries(characterImages).map(([path, module]) =
   };
 });
 
-// Add default alert icon
 const charactersList = [
   ...dynamicCharacters,
   { id: 'default', name: 'Alerta', img: 'https://img.icons8.com/fluency/96/appointment-reminders.png' }
 ];
 
 export const AppProvider = ({ children }) => {
+  const { user } = useAuth();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  const [activities, setActivities] = useState(JSON.parse(localStorage.getItem('activities')) || []);
-  const [settings, setSettings] = useState(JSON.parse(localStorage.getItem('settings')) || {
+  const [activities, setActivities] = useState([]);
+  const [settings, setSettings] = useState({
     logo: null,
     primaryColor: '#6366f1',
     calendarColor: '#6366f1',
-    popupCharacter: 'hellokitty', // 'hellokitty' or 'default'
+    popupCharacter: 'hellokitty',
     showNotification: false,
     currentNotification: null
   });
+
+  // Fetch data when user changes
+  useEffect(() => {
+    if (user) {
+      const fetchData = async () => {
+        try {
+          const [activitiesData, settingsData] = await Promise.all([
+            api.getActivities(),
+            api.getSettings()
+          ]);
+          setActivities(activitiesData);
+          if (settingsData && settingsData.user_id) {
+            setSettings(prev => ({ ...prev, ...settingsData, showNotification: !!settingsData.showNotification }));
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      fetchData();
+    } else {
+      setActivities([]);
+    }
+  }, [user]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -45,54 +69,63 @@ export const AppProvider = ({ children }) => {
   }, [theme]);
 
   useEffect(() => {
-    localStorage.setItem('activities', JSON.stringify(activities));
-  }, [activities]);
-
-  useEffect(() => {
-    localStorage.setItem('settings', JSON.stringify(settings));
     if (settings.primaryColor) {
       document.documentElement.style.setProperty('--primary', settings.primaryColor);
-      
-      // Extract RGB for transparent effects
       const hex = settings.primaryColor.replace('#', '');
       const r = parseInt(hex.substring(0, 2), 16);
       const g = parseInt(hex.substring(2, 4), 16);
       const b = parseInt(hex.substring(4, 6), 16);
       document.documentElement.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
     }
-  }, [settings]);
+  }, [settings.primaryColor]);
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
-  const addActivity = (activity) => {
-    setActivities(prev => [...prev, { 
+  const addActivity = async (activity) => {
+    const newActivity = { 
       id: activity.id || crypto.randomUUID(), 
       status: 'pending',
       ...activity 
-    }]);
+    };
+    setActivities(prev => [...prev, newActivity]);
+    if (user) {
+      await api.createActivity(newActivity);
+    }
   };
 
-  const updateActivity = (id, updates) => {
+  const updateActivity = async (id, updates) => {
     setActivities(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
+    if (user) {
+      const activity = activities.find(a => a.id === id);
+      await api.updateActivity(id, { ...activity, ...updates });
+    }
   };
 
-  const deleteActivity = (id) => {
+  const deleteActivity = async (id) => {
     setActivities(prev => prev.filter(a => a.id !== id));
+    if (user) {
+      await api.deleteActivity(id);
+    }
   };
 
-  const postponeActivity = (id, minutes) => {
-    setActivities(prev => prev.map(a => {
-      if (a.id === id) {
-        const newDate = new Date();
-        newDate.setMinutes(newDate.getMinutes() + minutes);
-        return { ...a, date: newDate.toISOString(), status: 'pending' };
-      }
-      return a;
-    }));
+  const postponeActivity = async (id, minutes) => {
+    const newDate = new Date();
+    newDate.setMinutes(newDate.getMinutes() + minutes);
+    const updates = { date: newDate.toISOString(), status: 'pending' };
+    
+    setActivities(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
+    
+    if (user) {
+      const activity = activities.find(a => a.id === id);
+      await api.updateActivity(id, { ...activity, ...updates });
+    }
   };
 
-  const updateSettings = (newSettings) => {
+  const updateSettings = async (newSettings) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
+    if (user) {
+      await api.updateSettings({ ...settings, ...newSettings });
+    }
   };
 
   return (

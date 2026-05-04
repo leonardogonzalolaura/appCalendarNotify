@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Mail, Lock, User, UserPlus, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, User, UserPlus, ArrowLeft, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Signup = ({ onToggleMode }) => {
@@ -11,14 +11,29 @@ const Signup = ({ onToggleMode }) => {
     password: '',
     confirmPassword: ''
   });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     if (formData.password !== formData.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      setError('Las contraseñas no coinciden');
       return;
     }
-    signup({ name: formData.name, email: formData.email });
+
+    setIsLoading(true);
+    const result = await signup({ 
+      name: formData.name, 
+      email: formData.email, 
+      password: formData.password 
+    });
+    setIsLoading(false);
+
+    if (!result.success) {
+      setError(result.error || 'Error al registrarse');
+    }
   };
 
   return (
@@ -36,6 +51,17 @@ const Signup = ({ onToggleMode }) => {
         <p className="text-muted">Únete a la mejor experiencia de gestión</p>
       </div>
 
+      {error && (
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          className="mb-4 p-3 bg-red-50 text-red-500 rounded-lg flex items-center gap-2 text-sm font-medium"
+        >
+          <AlertCircle size={16} />
+          {error}
+        </motion.div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative">
           <User className="absolute left-3 top-1/2 -translate-y-1/2 text-muted size-5 z-10" />
@@ -47,6 +73,7 @@ const Signup = ({ onToggleMode }) => {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
+            disabled={isLoading}
           />
         </div>
 
@@ -60,6 +87,7 @@ const Signup = ({ onToggleMode }) => {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
+            disabled={isLoading}
           />
         </div>
 
@@ -73,6 +101,7 @@ const Signup = ({ onToggleMode }) => {
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             required
+            disabled={isLoading}
           />
         </div>
 
@@ -86,11 +115,24 @@ const Signup = ({ onToggleMode }) => {
             value={formData.confirmPassword}
             onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
             required
+            disabled={isLoading}
           />
         </div>
 
-        <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2 mt-4">
-          <UserPlus size={20} />
+        <button 
+          type="submit" 
+          disabled={isLoading}
+          className="btn-primary w-full flex items-center justify-center gap-2 mt-4 disabled:opacity-50"
+        >
+          {isLoading ? (
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="size-5 border-2 border-white border-t-transparent rounded-full"
+            />
+          ) : (
+            <UserPlus size={20} />
+          )}
           Registrarse
         </button>
       </form>

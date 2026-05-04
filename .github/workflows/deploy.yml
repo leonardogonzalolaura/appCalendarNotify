@@ -2,7 +2,7 @@ name: Deploy to Lightsail
 
 on:
   push:
-    branches: [master]  # Cambia "main" por la rama que uses
+    branches: [main]  # o la rama que uses
 
 jobs:
   deploy:
@@ -11,34 +11,50 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      - name: 🟢 Setup Node.js
+      # ========== FRONTEND (React) ==========
+      - name: 🟢 Setup Node.js for frontend
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: 📦 Install dependencies
+      - name: 📦 Install frontend dependencies
         run: npm install
 
-      - name: 🏗️ Build project (React/Vite)
+      - name: 🏗️ Build frontend
         run: npm run build
 
-      - name: 🚀 Copy files to Lightsail via SCP
+      - name: 🚀 Deploy frontend to Lightsail
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          source: "dist/*"                    # Carpeta que genera Vite
-          target: "/var/www/appcalendar/html" # Ruta en tu servidor
+          source: "dist/*"
+          target: "/var/www/appcalendar/html"
           strip_components: 1
 
-      - name: 🔄 Restart Nginx (via SSH)
+      # ========== BACKEND (Node.js) ==========
+      - name: 📦 Copy backend files (excluding node_modules)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "server/*"
+          target: "/var/www/appcalendar/backend"
+          strip_components: 1
+
+      - name: 🔧 Install backend dependencies and restart PM2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo systemctl restart nginx
+            cd /var/www/appcalendar/backend
+            npm install
+            pm2 restart appcalendar-backend || pm2 start index.js --name appcalendar-backend
+            pm2 save
             echo "✅ Deployment completed at $(date)"
