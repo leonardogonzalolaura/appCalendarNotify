@@ -100,11 +100,35 @@ const Settings = () => {
           </div>
           <button 
             onClick={() => {
-              const char = characters.find(c => c.id === settings.popupCharacter) || characters[0];
-              new Notification("¡Prueba de AgendaPro!", { 
-                body: "Si ves esto, las notificaciones de sistema están funcionando correctamente.",
-                icon: char.img
-              });
+              console.log("Intentando enviar notificación de prueba...");
+              console.log("Permiso actual:", Notification.permission);
+              
+              if (!("Notification" in window)) {
+                alert("Este navegador no soporta notificaciones de escritorio");
+                return;
+              }
+
+              try {
+                const char = characters.find(c => c.id === settings.popupCharacter) || characters[0];
+                const notification = new Notification("¡Prueba de AgendaPro!", { 
+                  body: "Si ves esto, las notificaciones de sistema están funcionando correctamente.",
+                  icon: char?.img,
+                  tag: 'test-notification',
+                  renotify: true
+                });
+
+                notification.onclick = () => {
+                  console.log("Notificación clickeada");
+                  window.focus();
+                };
+
+                notification.onerror = (err) => {
+                  console.error("Error en la notificación:", err);
+                };
+              } catch (error) {
+                console.error("Error al crear la notificación:", error);
+                alert("Hubo un error al lanzar la notificación. Revisa la consola.");
+              }
             }}
             className="w-full py-2 border border-border rounded-lg text-sm font-bold hover:bg-surface transition-colors"
           >
