@@ -8,6 +8,18 @@ const getHeaders = () => {
   };
 };
 
+const handleResponse = async (res) => {
+  if (res.status === 401 || res.status === 403) {
+    localStorage.removeItem('app_token');
+    localStorage.removeItem('app_user');
+    window.location.href = '/'; // Redirect to login
+    throw new Error('Session expired');
+  }
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+};
+
 export const api = {
   // Auth
   async login(email, password) {
@@ -16,9 +28,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Login failed');
-    return data;
+    return handleResponse(res);
   },
 
   async signup(userData) {
@@ -27,9 +37,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Signup failed');
-    return data;
+    return handleResponse(res);
   },
 
   async googleLogin(credential) {
@@ -38,15 +46,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ credential })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Google login failed');
-    return data;
+    return handleResponse(res);
   },
 
   // Activities
   async getActivities() {
     const res = await fetch(`${API_URL}/activities`, { headers: getHeaders() });
-    return res.json();
+    return handleResponse(res);
   },
 
   async createActivity(activity) {
@@ -55,7 +61,7 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify(activity)
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   async updateActivity(id, activity) {
@@ -64,7 +70,7 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify(activity)
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   async deleteActivity(id) {
@@ -72,13 +78,13 @@ export const api = {
       method: 'DELETE',
       headers: getHeaders()
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   // Settings
   async getSettings() {
     const res = await fetch(`${API_URL}/settings`, { headers: getHeaders() });
-    return res.json();
+    return handleResponse(res);
   },
 
   async updateSettings(settings) {
@@ -87,6 +93,6 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify(settings)
     });
-    return res.json();
+    return handleResponse(res);
   }
 };

@@ -28,7 +28,7 @@ const charactersList = [
 ];
 
 export const AppProvider = ({ children }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [activities, setActivities] = useState([]);
   const [settings, setSettings] = useState({
@@ -49,19 +49,22 @@ export const AppProvider = ({ children }) => {
             api.getActivities(),
             api.getSettings()
           ]);
-          setActivities(activitiesData);
+          setActivities(Array.isArray(activitiesData) ? activitiesData : []);
           if (settingsData && settingsData.user_id) {
             setSettings(prev => ({ ...prev, ...settingsData, showNotification: !!settingsData.showNotification }));
           }
         } catch (error) {
           console.error('Error fetching data:', error);
+          if (error.message === 'Session expired') {
+            logout();
+          }
         }
       };
       fetchData();
     } else {
       setActivities([]);
     }
-  }, [user]);
+  }, [user, logout]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);

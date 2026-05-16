@@ -8,12 +8,24 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('app_user');
-    const token = localStorage.getItem('app_token');
-    if (savedUser && token) {
-      setUser(JSON.parse(savedUser));
-    }
-    setLoading(false);
+    const checkAuth = async () => {
+      const savedUser = localStorage.getItem('app_user');
+      const token = localStorage.getItem('app_token');
+      
+      if (savedUser && token) {
+        try {
+          // Verify token by fetching settings
+          await api.getSettings();
+          setUser(JSON.parse(savedUser));
+        } catch (error) {
+          console.error('Session validation failed:', error);
+          logout();
+        }
+      }
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = async (email, password) => {
