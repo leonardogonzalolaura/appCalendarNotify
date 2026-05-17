@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ActivityItem from './ActivityItem';
 
-const ActivityList = ({ activities, onDelete, onViewDetail, calendarColor }) => {
+const ActivityList = ({ activities, onDelete, onViewDetail, onEdit, calendarColor }) => {
     if (activities.length === 0) {
         return (
             <div className="text-center py-10 border-2 border-dashed border-border rounded-2xl text-muted">
@@ -20,6 +20,7 @@ const ActivityList = ({ activities, onDelete, onViewDetail, calendarColor }) => 
                         activity={activity}
                         onDelete={onDelete}
                         onViewDetail={onViewDetail}
+                        onEdit={onEdit}
                         calendarColor={calendarColor}
                     />
                 ))}

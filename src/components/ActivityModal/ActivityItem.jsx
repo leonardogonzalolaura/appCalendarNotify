@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
-import { Trash2, Info } from 'lucide-react';
+import { Trash2, Info, Pencil } from 'lucide-react';
 import DescriptionTooltip from './DescriptionTooltip';
 
-const ActivityItem = ({ activity, onDelete, onViewDetail }) => {
+const ActivityItem = ({ activity, onDelete, onViewDetail, onEdit }) => {
     const hasDescription = activity.description && activity.description.trim().length > 0;
 
     return (
@@ -46,6 +46,19 @@ const ActivityItem = ({ activity, onDelete, onViewDetail }) => {
                         </button>
                     )}
                     <button
+                        onClick={() => onEdit(activity)}
+                        className="p-1.5 text-muted hover:text-primary transition-all"
+                        style={{
+                            background: 'transparent',
+                            border: 'none',
+                            outline: 'none',
+                            borderRadius: '0px'
+                        }}
+                        title="Editar actividad"
+                    >
+                        <Pencil size={16} />
+                    </button>
+                    <button
                         onClick={() => onDelete(activity.id)}
                         className="p-1.5 text-muted hover:text-red-500 transition-all"
                         style={{
@@ -77,4 +90,4 @@ const ActivityItem = ({ activity, onDelete, onViewDetail }) => {
     );
 };
 
-export default ActivityItem;
+export default ActivityItem;

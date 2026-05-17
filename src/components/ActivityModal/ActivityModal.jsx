@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Plus, List } from 'lucide-react';
+import { X, Plus, List, Pencil } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, isSameDay } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -10,7 +10,7 @@ import ActivityDetailModal from './ActivityDetailModal';
 import CharacterDropdown from './CharacterDropdown';
 
 const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
-    const { activities, deleteActivity, settings, characters } = useApp();
+    const { activities, deleteActivity, updateActivity, settings, characters } = useApp();
     const [view, setView] = useState('list');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -20,6 +20,7 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
     const [isCharPickerOpen, setIsCharPickerOpen] = useState(false);
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [showDetailModal, setShowDetailModal] = useState(false);
+    const [editingActivityId, setEditingActivityId] = useState(null);
 
     const charButtonRef = useRef(null);
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
@@ -49,28 +50,65 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isCharPickerOpen]);
 
+    useEffect(() => {
+        if (isOpen) {
+            setView('list');
+            setTitle('');
+            setDescription('');
+            setTime('09:00');
+            setNotifyCount(3);
+            setSelectedChar(settings?.popupCharacter || 'hellokitty');
+            setEditingActivityId(null);
+        }
+    }, [isOpen, selectedDate, settings?.popupCharacter]);
+
     const dayActivities = activities.filter(a => isSameDay(new Date(a.date), selectedDate));
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const [hours, minutes] = time.split(':');
         const activityDate = new Date(selectedDate);
         activityDate.setHours(parseInt(hours), parseInt(minutes), 0);
 
-        onSave({
-            id: crypto.randomUUID(),
+        const activityData = {
             title,
             description,
             date: activityDate.toISOString(),
             notifyCount,
             characterId: selectedChar,
+            character_id: selectedChar,
             remindersLeft: notifyCount,
             status: 'pending'
-        });
+        };
+
+        if (editingActivityId) {
+            await updateActivity(editingActivityId, activityData);
+        } else {
+            await onSave({
+                id: crypto.randomUUID(),
+                ...activityData
+            });
+        }
 
         setTitle('');
         setDescription('');
+        setEditingActivityId(null);
         setView('list');
+    };
+
+    const handleEdit = (activity) => {
+        setEditingActivityId(activity.id);
+        setTitle(activity.title);
+        setDescription(activity.description || '');
+        
+        const dateObj = new Date(activity.date);
+        const hours = String(dateObj.getHours()).padStart(2, '0');
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+        setTime(`${hours}:${minutes}`);
+        
+        setNotifyCount(activity.notifyCount || 3);
+        setSelectedChar(activity.characterId || activity.character_id || settings.popupCharacter || 'hellokitty');
+        setView('edit');
     };
 
     const handleViewDetail = (activity) => {
@@ -103,8 +141,14 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
 
                         <div className="mb-4 md:mb-6 flex-shrink-0">
                             <h2 className="text-lg md:text-2xl font-bold flex items-center gap-2">
-                                {view === 'list' ? <List className="text-primary" /> : <Plus className="text-primary" />}
-                                {view === 'list' ? 'Actividades del Día' : 'Nueva Actividad'}
+                                {view === 'list' ? (
+                                    <List className="text-primary" />
+                                ) : view === 'edit' ? (
+                                    <Pencil className="text-primary" />
+                                ) : (
+                                    <Plus className="text-primary" />
+                                )}
+                                {view === 'list' ? 'Actividades del Día' : view === 'edit' ? 'Editar Actividad' : 'Nueva Actividad'}
                             </h2>
                             <p className="text-muted capitalize">
                                 {format(selectedDate, "eeee d 'de' MMMM", { locale: es })}
@@ -117,6 +161,7 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
                                     activities={dayActivities}
                                     onDelete={handleDeleteActivity}
                                     onViewDetail={handleViewDetail}
+                                    onEdit={handleEdit}
                                     calendarColor={settings?.calendarColor}
                                 />
                             ) : (
@@ -143,7 +188,15 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
                         {view === 'list' && (
                             <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-border flex-shrink-0">
                                 <button
-                                    onClick={() => setView('add')}
+                                    onClick={() => {
+                                        setEditingActivityId(null);
+                                        setTitle('');
+                                        setDescription('');
+                                        setTime('09:00');
+                                        setNotifyCount(3);
+                                        setSelectedChar(settings.popupCharacter || 'hellokitty');
+                                        setView('add');
+                                    }}
                                     className="w-full btn-primary flex items-center justify-center gap-2 py-3 md:py-4 text-sm font-bold"
                                 >
                                     <Plus size={20} />
