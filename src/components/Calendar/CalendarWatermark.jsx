@@ -16,26 +16,34 @@ const CalendarWatermark = ({ currentMonth }) => {
     const monthKey = currentMonth.toISOString ? currentMonth.toISOString() : String(currentMonth);
 
     return (
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-10 dark:opacity-[0.06] z-0">
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-15 dark:opacity-[0.08] z-0 overflow-hidden">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={monthKey}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.85, y: 15 }}
+                    animate={{ 
+                        opacity: 1, 
+                        scale: 1,
+                        y: [0, -12, 0] // Elogiado efecto flotante
+                    }}
+                    exit={{ opacity: 0, scale: 0.85, y: -15 }}
                     transition={{
-                        duration: 0.3,
+                        y: {
+                            duration: 6,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        },
+                        duration: 0.4,
                         ease: "easeOut"
                     }}
-                    className="w-36 h-36 md:w-44 md:h-44 lg:w-52 lg:h-52"
+                    className="w-44 h-44 md:w-56 md:h-56 lg:w-72 lg:h-72 flex items-center justify-center"
                 >
                     <img
                         src={currentMascot.img}
                         alt="Mascot Watermark"
                         className="w-full h-full object-contain"
                         style={{
-                            filter: 'grayscale(100%)',
-                            opacity: 0.8
+                            filter: 'saturate(85%) drop-shadow(0px 10px 30px rgba(var(--primary-rgb), 0.25))',
                         }}
                     />
                 </motion.div>

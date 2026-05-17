@@ -51,7 +51,12 @@ export const AppProvider = ({ children }) => {
           ]);
           setActivities(Array.isArray(activitiesData) ? activitiesData : []);
           if (settingsData && settingsData.user_id) {
-            setSettings(prev => ({ ...prev, ...settingsData, showNotification: !!settingsData.showNotification }));
+            setSettings(prev => ({ 
+              ...prev, 
+              ...settingsData, 
+              showNotification: false, // Forzar a false al iniciar/cargar para evitar bloqueos persistentes
+              currentNotification: null // Asegurar que inicie limpio
+            }));
           }
         } catch (error) {
           console.error('Error fetching data:', error);

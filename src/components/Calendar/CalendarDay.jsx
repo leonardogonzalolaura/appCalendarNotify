@@ -21,7 +21,7 @@ const CalendarDay = ({ day, activities, isCurrentMonth, isToday, calendarColor, 
                     animate={isToday ? { scale: 1 } : {}}
                     transition={{ duration: 0.3, type: "spring" }}
                     className={`
-            size-6 md:size-8 flex items-center justify-center rounded-full text-xs md:text-sm font-bold relative z-10
+            size-8 md:size-10 flex items-center justify-center rounded-full text-sm md:text-base font-extrabold relative z-10
             ${isToday ? 'text-white' : ''}
           `}
                     style={{ backgroundColor: isToday ? calendarColor : 'transparent' }}
