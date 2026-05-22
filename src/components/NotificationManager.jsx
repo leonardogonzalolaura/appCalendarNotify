@@ -4,86 +4,46 @@ import { isPast, parseISO } from 'date-fns';
 
 const NotificationManager = () => {
   const { activities, settings, updateSettings, characters } = useApp();
-  const lastSystemNotification = useRef(new Map()); // Track last system notification per activity
+  const lastSystemNotification = useRef(new Map()); // Para banner
+  const lastModalNotification = useRef(new Map()); // Para modal - NUEVO
 
-  // Request notification permission on mount
-  useEffect(() => {
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission();
-    }
-  }, []);
-
-  // Function to show system notification (banner)
-  const showSystemNotification = (activity) => {
-    if (!('Notification' in window) || Notification.permission !== 'granted') {
-      console.log("Notification permission not granted");
-      return;
-    }
-    
-    try {
-      const char = characters.find(c => c.id === activity.characterId) || characters[0];
-      
-      const notification = new Notification(`¡AgendaPro: ${activity.title}!`, {
-        body: activity.description || "Haz clic para ver detalles o posponer.",
-        icon: char?.img,
-        tag: activity.id.toString(),
-        requireInteraction: true,
-        silent: false
-      });
-      
-      notification.onclick = () => {
-        window.focus();
-        notification.close();
-        // Open the modal if it's not already open
-        if (!settings.showNotification) {
-          updateSettings({ 
-            showNotification: true, 
-            currentNotification: activity 
-          });
-        }
-      };
-      
-      notification.onclose = () => {
-        console.log(`System notification closed for: ${activity.title}`);
-        // Don't do anything here - the cooldown will handle reappearance
-      };
-      
-    } catch (err) {
-      console.error("Error showing system notification:", err);
-    }
-  };
-
-  // Check if we should show system notification based on cooldown
+  // Modificar shouldShowSystemNotification para banner SOLO
   const shouldShowSystemNotification = (activityId) => {
     const lastShown = lastSystemNotification.current.get(activityId);
     if (!lastShown) return true;
     
-    // 1 minutes cooldown (same as modal's minimum postpone)
     const cooldownMinutes = 1;
     const minutesSinceLast = (Date.now() - lastShown) / 1000 / 60;
     
     return minutesSinceLast >= cooldownMinutes;
   };
 
+  // NUEVA función para modal
+  const shouldShowModalNotification = (activityId) => {
+    const lastShown = lastModalNotification.current.get(activityId);
+    if (!lastShown) return true;
+    
+    const cooldownMinutes = 1;
+    const minutesSinceLast = (Date.now() - lastShown) / 1000 / 60;
+    
+    return minutesSinceLast >= cooldownMinutes;
+  };
+
+  // Modificar el useEffect principal
   useEffect(() => {
-    // Check every 30 seconds (good balance between performance and responsiveness)
     const interval = setInterval(() => {
       const now = new Date();
       
       activities.forEach(activity => {
-        // Skip completed activities
         if (activity.status === 'completed') {
-          // Clean up map for completed activities
-          if (lastSystemNotification.current.has(activity.id)) {
-            lastSystemNotification.current.delete(activity.id);
-          }
+          lastSystemNotification.current.delete(activity.id);
+          lastModalNotification.current.delete(activity.id); // También limpiar modal
           return;
         }
         
         let shouldNotify = false;
         let notifyTime = null;
         
-        // Check if activity needs notification based on its status
         if (activity.status === 'pending') {
           const activityTime = parseISO(activity.date);
           shouldNotify = isPast(activityTime);
@@ -96,35 +56,25 @@ const NotificationManager = () => {
         }
         
         if (shouldNotify) {
-          // Check cooldown to avoid spam
+          // ✅ BANNER: usa su propio cooldown
           if (shouldShowSystemNotification(activity.id)) {
-            console.log(`Showing system notification for: ${activity.title} (Status: ${activity.status})`);
-            
-            // Update last notification time
+            console.log(`Showing system notification for: ${activity.title}`);
             lastSystemNotification.current.set(activity.id, Date.now());
-            
-            // Show system banner notification
             showSystemNotification(activity);
-            
-            // Also show the modal if not already showing
-            // This ensures the user gets both the banner and the blocking modal
-            if (!settings.showNotification) {
-              console.log("Also opening blocking modal");
-              updateSettings({ 
-                showNotification: true, 
-                currentNotification: activity 
-              });
-            }
-          } else {
-            const lastShown = lastSystemNotification.current.get(activity.id);
-            const minutesLeft = Math.round((5 - ((Date.now() - lastShown) / 1000 / 60)) * 10) / 10;
-            if (minutesLeft > 0) {
-              console.log(`System notification cooldown for ${activity.title}: ${minutesLeft} minutes remaining`);
-            }
+          }
+          
+          // ✅ MODAL: usa su propio cooldown separado
+          if (!settings.showNotification && shouldShowModalNotification(activity.id)) {
+            console.log("Also opening blocking modal");
+            lastModalNotification.current.set(activity.id, Date.now());
+            updateSettings({ 
+              showNotification: true, 
+              currentNotification: activity 
+            });
           }
         }
       });
-    }, 30000); // Check every 30 seconds
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [activities, settings.showNotification, updateSettings, characters]);
