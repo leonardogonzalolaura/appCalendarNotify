@@ -37,8 +37,18 @@ function createTables() {
       time TEXT,
       status TEXT,
       character_id TEXT,
+      notify_count INTEGER DEFAULT 3,
+      reminders_left INTEGER DEFAULT 3,
       FOREIGN KEY (user_id) REFERENCES users (id)
     )`);
+
+    // Migrations for existing databases
+    db.run(`ALTER TABLE activities ADD COLUMN notify_count INTEGER DEFAULT 3`, (err) => {
+      // Ignore if column already exists
+    });
+    db.run(`ALTER TABLE activities ADD COLUMN reminders_left INTEGER DEFAULT 3`, (err) => {
+      // Ignore if column already exists
+    });
 
     // Settings table
     db.run(`CREATE TABLE IF NOT EXISTS settings (

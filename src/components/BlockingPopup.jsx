@@ -103,6 +103,15 @@ const BlockingPopup = () => {
                   Otro
                 </button>
               </div>
+
+              <button
+                onClick={() => {
+                  updateSettings({ showNotification: false, currentNotification: null });
+                }}
+                className="w-full py-2.5 border border-border rounded-xl text-xs font-extrabold hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-all mt-2"
+              >
+                Cerrar (Avisar de nuevo en 1 min)
+              </button>
             </>
           ) : (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">

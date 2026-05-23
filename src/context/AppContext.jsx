@@ -49,7 +49,13 @@ export const AppProvider = ({ children }) => {
             api.getActivities(),
             api.getSettings()
           ]);
-          setActivities(Array.isArray(activitiesData) ? activitiesData : []);
+          const normalized = (Array.isArray(activitiesData) ? activitiesData : []).map(act => ({
+            ...act,
+            notifyCount: act.notify_count !== undefined ? act.notify_count : (act.notifyCount || 3),
+            remindersLeft: act.reminders_left !== undefined ? act.reminders_left : (act.remindersLeft !== undefined ? act.remindersLeft : 3),
+            characterId: act.character_id || act.characterId || 'hellokitty'
+          }));
+          setActivities(normalized);
           if (settingsData && settingsData.user_id) {
             setSettings(prev => ({ 
               ...prev, 
@@ -119,12 +125,17 @@ export const AppProvider = ({ children }) => {
   const postponeActivity = async (id, minutes) => {
     const newDate = new Date();
     newDate.setMinutes(newDate.getMinutes() + minutes);
-    const updates = { date: newDate.toISOString(), status: 'pending' };
+    const activity = activities.find(a => a.id === id);
+    const originalNotifyCount = activity ? (activity.notifyCount || activity.notify_count || 3) : 3;
+    const updates = { 
+      date: newDate.toISOString(), 
+      status: 'pending',
+      remindersLeft: originalNotifyCount
+    };
     
     setActivities(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
     
     if (user) {
-      const activity = activities.find(a => a.id === id);
       await api.updateActivity(id, { ...activity, ...updates });
     }
   };

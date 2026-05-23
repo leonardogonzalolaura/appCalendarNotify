@@ -13,22 +13,30 @@ router.get('/activities', authenticateToken, (req, res) => {
 });
 
 router.post('/activities', authenticateToken, (req, res) => {
-  const { id, title, description, date, time, status, character_id } = req.body;
+  const { id, title, description, date, time, status, character_id, characterId, notify_count, notifyCount, reminders_left, remindersLeft } = req.body;
+  const dbCharId = character_id || characterId;
+  const dbNotifyCount = notify_count !== undefined ? notify_count : (notifyCount !== undefined ? notifyCount : 3);
+  const dbRemindersLeft = reminders_left !== undefined ? reminders_left : (remindersLeft !== undefined ? remindersLeft : dbNotifyCount);
+
   db.run(
-    'INSERT INTO activities (id, user_id, title, description, date, time, status, character_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-    [id, req.user.id, title, description, date, time, status, character_id],
+    'INSERT INTO activities (id, user_id, title, description, date, time, status, character_id, notify_count, reminders_left) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [id, req.user.id, title, description, date, time, status, dbCharId, dbNotifyCount, dbRemindersLeft],
     function(err) {
       if (err) return res.status(500).json({ error: err.message });
-      res.json({ id, title, description, date, time, status, character_id });
+      res.json({ id, title, description, date, time, status, character_id: dbCharId, notify_count: dbNotifyCount, reminders_left: dbRemindersLeft });
     }
   );
 });
 
 router.put('/activities/:id', authenticateToken, (req, res) => {
-  const { title, description, date, time, status, character_id } = req.body;
+  const { title, description, date, time, status, character_id, characterId, notify_count, notifyCount, reminders_left, remindersLeft } = req.body;
+  const dbCharId = character_id || characterId;
+  const dbNotifyCount = notify_count !== undefined ? notify_count : (notifyCount !== undefined ? notifyCount : 3);
+  const dbRemindersLeft = reminders_left !== undefined ? reminders_left : (remindersLeft !== undefined ? remindersLeft : dbNotifyCount);
+
   db.run(
-    'UPDATE activities SET title = ?, description = ?, date = ?, time = ?, status = ?, character_id = ? WHERE id = ? AND user_id = ?',
-    [title, description, date, time, status, character_id, req.params.id, req.user.id],
+    'UPDATE activities SET title = ?, description = ?, date = ?, time = ?, status = ?, character_id = ?, notify_count = ?, reminders_left = ? WHERE id = ? AND user_id = ?',
+    [title, description, date, time, status, dbCharId, dbNotifyCount, dbRemindersLeft, req.params.id, req.user.id],
     function(err) {
       if (err) return res.status(500).json({ error: err.message });
       res.json({ message: 'Updated successfully' });
