@@ -16,7 +16,7 @@ import CalendarHeader from './CalendarHeader';
 import CalendarWeekDays from './CalendarWeekDays';
 import CalendarDay from './CalendarDay';
 import CalendarWatermark from './CalendarWatermark';
-import CalendarToolbar from './CalendarToolbar';
+
 
 const Calendar = ({ onDayClick }) => {
     const { activities, settings } = useApp();
@@ -80,7 +80,6 @@ const Calendar = ({ onDayClick }) => {
                 </div>
             </div>
 
-            <CalendarToolbar />
         </div>
     );
 };

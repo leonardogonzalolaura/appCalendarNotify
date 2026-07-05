@@ -8,6 +8,7 @@ import ActivityList from './ActivityList';
 import ActivityForm from './ActivityForm';
 import ActivityDetailModal from './ActivityDetailModal';
 import CharacterDropdown from './CharacterDropdown';
+import ConfirmDialog from '../ConfirmDialog';
 
 const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
     const { activities, deleteActivity, updateActivity, settings, characters } = useApp();
@@ -21,6 +22,7 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [editingActivityId, setEditingActivityId] = useState(null);
+    const [confirmDelete, setConfirmDelete] = useState(null);
 
     const charButtonRef = useRef(null);
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
@@ -117,7 +119,14 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
     };
 
     const handleDeleteActivity = (id) => {
-        deleteActivity(id);
+        setConfirmDelete(id);
+    };
+
+    const handleConfirmDelete = () => {
+        if (confirmDelete) {
+            deleteActivity(confirmDelete);
+            setConfirmDelete(null);
+        }
     };
 
     if (!isOpen) return null;
@@ -221,6 +230,16 @@ const ActivityModal = ({ isOpen, onClose, selectedDate, onSave }) => {
                 activity={selectedActivity}
                 isOpen={showDetailModal}
                 onClose={() => setShowDetailModal(false)}
+            />
+
+            <ConfirmDialog
+                isOpen={confirmDelete !== null}
+                title="Eliminar Actividad"
+                message="¿Estás seguro de que deseas eliminar esta actividad? Esta acción no se puede deshacer."
+                confirmText="Eliminar"
+                cancelText="Cancelar"
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setConfirmDelete(null)}
             />
         </>
     );

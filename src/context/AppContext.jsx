@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../api';
 import { useAuth } from './AuthContext';
+import { useToast } from './ToastContext';
 
 const AppContext = createContext();
 
@@ -29,6 +30,7 @@ const charactersList = [
 
 export const AppProvider = ({ children }) => {
   const { user, logout } = useAuth();
+  const { addToast } = useToast();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [activities, setActivities] = useState([]);
   const [settings, setSettings] = useState({
@@ -105,6 +107,7 @@ export const AppProvider = ({ children }) => {
     if (user) {
       await api.createActivity(newActivity);
     }
+    addToast('Actividad creada correctamente', 'success');
   };
 
   const updateActivity = async (id, updates) => {
@@ -113,6 +116,7 @@ export const AppProvider = ({ children }) => {
       const activity = activities.find(a => a.id === id);
       await api.updateActivity(id, { ...activity, ...updates });
     }
+    addToast('Actividad actualizada correctamente', 'success');
   };
 
   const deleteActivity = async (id) => {
@@ -120,6 +124,7 @@ export const AppProvider = ({ children }) => {
     if (user) {
       await api.deleteActivity(id);
     }
+    addToast('Actividad eliminada correctamente', 'info');
   };
 
   const postponeActivity = async (id, minutes) => {
