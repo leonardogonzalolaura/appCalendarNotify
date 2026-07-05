@@ -12,6 +12,7 @@ import {
 } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
+import { useMobile } from '../../hooks/useMobile';
 import CalendarHeader from './CalendarHeader';
 import CalendarWeekDays from './CalendarWeekDays';
 import CalendarDay from './CalendarDay';
@@ -20,6 +21,7 @@ import CalendarWatermark from './CalendarWatermark';
 
 const Calendar = ({ onDayClick }) => {
     const { activities, settings } = useApp();
+    const isMobile = useMobile();
     const [currentMonth, setCurrentMonth] = useState(new Date());
 
     const nextMonth = () => {
@@ -27,7 +29,11 @@ const Calendar = ({ onDayClick }) => {
     };
 
     const prevMonth = () => {
-        setCurrentMonth(prev => subMonths(prev, 1)); // Corregido: subMonths(prev, 1)
+        setCurrentMonth(prev => subMonths(prev, 1));
+    };
+
+    const goToToday = () => {
+        setCurrentMonth(new Date());
     };
 
     const monthStart = startOfMonth(currentMonth);
@@ -38,13 +44,14 @@ const Calendar = ({ onDayClick }) => {
 
     return (
         <div className="relative group/calendar">
-            <div className="glass-card overflow-hidden relative max-w-4xl mx-auto">
+            <div className="glass-card overflow-hidden relative" style={{ maxWidth: isMobile ? '100%' : '64rem', margin: '0 auto' }}>
                 <CalendarWatermark currentMonth={currentMonth} />
 
                 <CalendarHeader
                     currentMonth={currentMonth}
                     onPrevMonth={prevMonth}
                     onNextMonth={nextMonth}
+                    onGoToToday={goToToday}
                 />
 
                 <CalendarWeekDays />

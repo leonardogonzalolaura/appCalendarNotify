@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { ImageIcon, Check, X, AlertTriangle, BellRing, Volume2, ShieldAlert, Activity, Info, BatteryCharging } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { motion } from 'framer-motion';
+import { useMobile } from '../hooks/useMobile';
 
 const Settings = () => {
   const { settings, updateSettings, characters } = useApp();
+  const isMobile = useMobile();
   const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
@@ -29,12 +31,12 @@ const Settings = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start animate-fade pb-10">
+    <div className="grid grid-cols-1 lg:grid-cols-2 items-start animate-fade pb-10" style={{ gap: isMobile ? '16px' : '32px' }}>
 
       {/* Column 1: Alerts Diagnostic Panel */}
       <div className="space-y-8">
 
-        <div className="glass-card p-6 flex flex-col gap-6 relative overflow-hidden">
+        <div className="glass-card flex flex-col relative overflow-hidden" style={{ padding: isMobile ? '16px' : '24px', gap: isMobile ? '16px' : '24px' }}>
           <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl pointer-events-none" />
 
           <h3 className="text-lg font-bold flex items-center gap-2 border-b border-border/50 pb-3">
@@ -42,7 +44,10 @@ const Settings = () => {
           </h3>
 
           <p className="text-xs text-muted -mt-3 leading-relaxed">
-            Las notificaciones dependen tanto de tu navegador como de la configuración de tu sistema operativo. Revisa el estado actual a continuación para garantizar el correcto funcionamiento:
+            {isMobile
+              ? 'Revisa el estado de las notificaciones para garantizar su correcto funcionamiento:'
+              : 'Las notificaciones dependen tanto de tu navegador como de la configuración de tu sistema operativo. Revisa el estado actual a continuación para garantizar el correcto funcionamiento:'
+            }
           </p>
 
           <div className="flex flex-col">
@@ -51,8 +56,8 @@ const Settings = () => {
             <div
               className="flex items-start gap-4 transition-all"
               style={{
-                paddingTop: '1.25rem',
-                paddingBottom: '1.25rem',
+                paddingTop: isMobile ? '0.875rem' : '1.25rem',
+                paddingBottom: isMobile ? '0.875rem' : '1.25rem',
                 borderBottom: '1px solid var(--border)'
               }}
             >
@@ -131,9 +136,10 @@ const Settings = () => {
                         }
                       });
                     }}
-                    className="mt-2.5 px-3 py-1.5 bg-primary text-white text-[10px] font-bold rounded-lg hover:bg-primary-hover transition-all flex items-center gap-1 shadow-sm shadow-primary/20"
+                    className="mt-2.5 px-3 py-1.5 bg-primary text-white font-bold rounded-lg hover:bg-primary-hover transition-all flex items-center gap-1 shadow-sm shadow-primary/20"
+                    style={{ fontSize: isMobile ? '12px' : '10px' }}
                   >
-                    <BellRing size={11} />
+                    <BellRing size={isMobile ? 12 : 11} />
                     Solicitar Permiso
                   </button>
                 )}
@@ -144,8 +150,8 @@ const Settings = () => {
             <div
               className="flex items-start gap-4 transition-all"
               style={{
-                paddingTop: '1.25rem',
-                paddingBottom: '1.25rem',
+                paddingTop: isMobile ? '0.875rem' : '1.25rem',
+                paddingBottom: isMobile ? '0.875rem' : '1.25rem',
                 borderBottom: '1px solid var(--border)'
               }}
             >
@@ -197,8 +203,8 @@ const Settings = () => {
             <div
               className="flex items-start gap-4 transition-all"
               style={{
-                paddingTop: '1.25rem',
-                paddingBottom: '1.25rem',
+                paddingTop: isMobile ? '0.875rem' : '1.25rem',
+                paddingBottom: isMobile ? '0.875rem' : '1.25rem',
                 borderBottom: '1px solid var(--border)'
               }}
             >
@@ -247,8 +253,8 @@ const Settings = () => {
             <div
               className="flex items-start gap-4 transition-all"
               style={{
-                paddingTop: '1.25rem',
-                paddingBottom: '1.25rem',
+                paddingTop: isMobile ? '0.875rem' : '1.25rem',
+                paddingBottom: isMobile ? '0.875rem' : '1.25rem',
                 borderBottom: '1px solid var(--border)'
               }}
             >
@@ -297,8 +303,8 @@ const Settings = () => {
             <div
               className="flex items-start gap-4 transition-all"
               style={{
-                paddingTop: '1.25rem',
-                paddingBottom: '1.25rem'
+                paddingTop: isMobile ? '0.875rem' : '1.25rem',
+                paddingBottom: isMobile ? '0.875rem' : '1.25rem'
               }}
             >
               <span
@@ -351,7 +357,7 @@ const Settings = () => {
       <div className="space-y-8">
 
         {/* Notifications Test Card */}
-        <div className="glass-card p-6 flex flex-col gap-5 relative overflow-hidden">
+        <div className="glass-card flex flex-col relative overflow-hidden" style={{ padding: isMobile ? '16px' : '24px', gap: isMobile ? '16px' : '20px' }}>
           <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/5 rounded-full blur-2xl pointer-events-none" />
 
           <h3 className="text-lg font-bold flex items-center gap-2 border-b border-border/50 pb-3">
@@ -359,7 +365,7 @@ const Settings = () => {
           </h3>
 
           <p className="text-xs text-muted -mt-2">
-            Usa el botón de abajo para verificar instantáneamente si tu navegador puede emitir alertas.
+            {isMobile ? 'Verifica si tu navegador puede emitir alertas:' : 'Usa el botón de abajo para verificar instantáneamente si tu navegador puede emitir alertas.'}
           </p>
 
           <button
@@ -394,7 +400,7 @@ const Settings = () => {
         </div>
 
         {/* Character / Mascot Picker Card */}
-        <div className="glass-card p-6 flex flex-col gap-4">
+        <div className="glass-card flex flex-col" style={{ padding: isMobile ? '16px' : '24px', gap: isMobile ? '12px' : '16px' }}>
           <h3 className="text-lg font-bold flex items-center gap-2 border-b border-border/50 pb-3">
             <ImageIcon size={20} className="text-primary" /> Personaje de Notificación
           </h3>

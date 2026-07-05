@@ -1,60 +1,96 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { format, isSameDay } from 'date-fns';
+import { useMobile } from '../../hooks/useMobile';
 
 const CalendarDay = ({ day, activities, isCurrentMonth, isToday, calendarColor, onDayClick }) => {
+    const isMobile = useMobile();
     const dayActivities = activities.filter(a => isSameDay(new Date(a.date), day));
 
     return (
         <motion.div
             whileHover={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
             onClick={() => onDayClick(day)}
-            className={`
-        min-h-[60px] md:min-h-[100px] p-1 md:p-2 border-r border-b border-border cursor-pointer transition-all flex flex-col gap-1
-        ${!isCurrentMonth ? 'opacity-30 bg-background/30' : 'bg-surface/10'}
-        ${isToday ? 'relative' : ''}
-      `}
+            style={{
+                minHeight: isMobile ? '52px' : '80px',
+                padding: isMobile ? '3px' : '6px',
+                opacity: !isCurrentMonth ? 0.3 : 1,
+                position: isToday ? 'relative' : undefined,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '3px',
+                borderRight: '1px solid var(--border)',
+                borderBottom: '1px solid var(--border)',
+                cursor: 'pointer'
+            }}
         >
             <div className="flex justify-between items-start mb-1">
                 <motion.span
                     initial={isToday ? { scale: 0.8 } : {}}
                     animate={isToday ? { scale: 1 } : {}}
                     transition={{ duration: 0.3, type: "spring" }}
-                    className={`
-            size-8 md:size-10 flex items-center justify-center rounded-full text-sm md:text-base font-extrabold relative z-10
-            ${isToday ? 'text-white' : ''}
-          `}
-                    style={{ backgroundColor: isToday ? calendarColor : 'transparent' }}
+                    style={{
+                        width: isMobile ? '28px' : '36px',
+                        height: isMobile ? '28px' : '36px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: '50%',
+                        fontSize: isMobile ? '0.75rem' : '0.875rem',
+                        fontWeight: 800,
+                        position: 'relative',
+                        zIndex: 10,
+                        color: isToday ? 'white' : undefined,
+                        backgroundColor: isToday ? calendarColor : 'transparent'
+                    }}
                 >
                     {format(day, 'd')}
                 </motion.span>
                 {dayActivities.length > 0 && (
-                    <div className="flex -space-x-1 relative z-10">
+                    <div style={{ display: 'flex', position: 'relative', zIndex: 10, marginLeft: '-4px' }}>
                         {dayActivities.slice(0, 3).map((_, i) => (
                             <div
                                 key={i}
-                                className="size-2 rounded-full border border-surface"
-                                style={{ backgroundColor: calendarColor }}
+                                style={{
+                                    width: isMobile ? '10px' : '8px',
+                                    height: isMobile ? '10px' : '8px',
+                                    borderRadius: '50%',
+                                    backgroundColor: calendarColor,
+                                    border: '1px solid var(--surface)',
+                                    marginLeft: '-3px'
+                                }}
                             />
                         ))}
                     </div>
                 )}
             </div>
 
-            <div className="space-y-1 flex-1 overflow-hidden relative z-10">
-                {dayActivities.slice(0, 2).map((activity, i) => (
-                    <motion.div
-                        key={activity.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.05 }}
-                        className="text-[9px] md:text-[10px] p-0.5 md:p-1 px-1 md:px-2 rounded bg-surface border-l-2 truncate font-bold hidden sm:block"
-                        style={{ borderLeftColor: calendarColor }}
-                    >
-                        {activity.title}
-                    </motion.div>
-                ))}
-            </div>
+            {!isMobile && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', flex: 1, overflow: 'hidden', position: 'relative', zIndex: 10 }}>
+                    {dayActivities.slice(0, 2).map((activity, i) => (
+                        <motion.div
+                            key={activity.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.05 }}
+                            style={{
+                                fontSize: '9px',
+                                padding: '2px 4px',
+                                borderRadius: '4px',
+                                backgroundColor: 'var(--surface)',
+                                borderLeft: `2px solid ${calendarColor}`,
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                fontWeight: 700,
+                                display: 'block'
+                            }}
+                        >
+                            {activity.title}
+                        </motion.div>
+                    ))}
+                </div>
+            )}
         </motion.div>
     );
 };
