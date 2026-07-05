@@ -162,16 +162,16 @@ const Dashboard = ({ user, onAddActivity }) => {
 
       {/* ── Stats ── */}
       <motion.div variants={item} initial="hidden" animate="show">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
-          <div style={{ borderRadius: '1.5rem', padding: '1.5rem', background: 'var(--surface)', border: '1px solid var(--border)', overflow: 'hidden' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
-              <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(99,102,241,0.1)' }}>
-                <Clock size={20} style={{ color: 'var(--primary)' }} />
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+          <div style={{ flex: '1 1 110px', minWidth: 0, borderRadius: '1rem', padding: '1rem', background: 'var(--surface)', border: '1px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+              <div style={{ width: '2rem', height: '2rem', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(99,102,241,0.1)' }}>
+                <Clock size={16} style={{ color: 'var(--primary)' }} />
               </div>
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-muted)' }}>Pendientes</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Pendientes</span>
             </div>
-            <p style={{ fontSize: '2.25rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '1rem' }}>{pendingToday.length}</p>
-            <div style={{ height: '0.5rem', borderRadius: '9999px', overflow: 'hidden', background: 'rgba(99,102,241,0.1)' }}>
+            <p style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '0.75rem' }}>{pendingToday.length}</p>
+            <div style={{ height: '0.375rem', borderRadius: '9999px', overflow: 'hidden', background: 'rgba(99,102,241,0.1)' }}>
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${totalToday > 0 ? (pendingToday.length / totalToday) * 100 : 0}%` }}
@@ -180,15 +180,15 @@ const Dashboard = ({ user, onAddActivity }) => {
             </div>
           </div>
 
-          <div style={{ borderRadius: '1.5rem', padding: '1.5rem', background: 'var(--surface)', border: '1px solid var(--border)', overflow: 'hidden' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
-              <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0fdf4' }}>
-                <CheckCircle2 size={20} style={{ color: '#22c55e' }} />
+          <div style={{ flex: '1 1 110px', minWidth: 0, borderRadius: '1rem', padding: '1rem', background: 'var(--surface)', border: '1px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+              <div style={{ width: '2rem', height: '2rem', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0fdf4' }}>
+                <CheckCircle2 size={16} style={{ color: '#22c55e' }} />
               </div>
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-muted)' }}>Completadas</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Completadas</span>
             </div>
-            <p style={{ fontSize: '2.25rem', fontWeight: 900, color: '#22c55e', marginBottom: '1rem' }}>{completedToday.length}</p>
-            <div style={{ height: '0.5rem', borderRadius: '9999px', overflow: 'hidden', background: '#dcfce7' }}>
+            <p style={{ fontSize: '1.75rem', fontWeight: 900, color: '#22c55e', marginBottom: '0.75rem' }}>{completedToday.length}</p>
+            <div style={{ height: '0.375rem', borderRadius: '9999px', overflow: 'hidden', background: '#dcfce7' }}>
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${totalToday > 0 ? (completedToday.length / totalToday) * 100 : 0}%` }}
@@ -197,15 +197,15 @@ const Dashboard = ({ user, onAddActivity }) => {
             </div>
           </div>
 
-          <div style={{ borderRadius: '1.5rem', padding: '1.5rem', background: 'var(--surface)', border: '1px solid var(--border)', overflow: 'hidden' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
-              <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff7ed' }}>
-                <ListTodo size={20} style={{ color: '#f97316' }} />
+          <div style={{ flex: '1 1 110px', minWidth: 0, borderRadius: '1rem', padding: '1rem', background: 'var(--surface)', border: '1px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+              <div style={{ width: '2rem', height: '2rem', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff7ed' }}>
+                <ListTodo size={16} style={{ color: '#f97316' }} />
               </div>
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-muted)' }}>Total</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Total</span>
             </div>
-            <p style={{ fontSize: '2.25rem', fontWeight: 900, color: '#f97316', marginBottom: '1rem' }}>{totalToday}</p>
-            <div style={{ height: '0.5rem', borderRadius: '9999px', overflow: 'hidden', background: '#ffedd5' }}>
+            <p style={{ fontSize: '1.75rem', fontWeight: 900, color: '#f97316', marginBottom: '0.75rem' }}>{totalToday}</p>
+            <div style={{ height: '0.375rem', borderRadius: '9999px', overflow: 'hidden', background: '#ffedd5' }}>
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: '100%' }}

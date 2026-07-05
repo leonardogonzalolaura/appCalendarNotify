@@ -95,26 +95,23 @@ function App() {
           borderBottom: '1px solid var(--border)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', maxWidth: '72rem', margin: '0 auto', padding: '0.75rem 1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', maxWidth: '72rem', margin: '0 auto', padding: '0.5rem 0.75rem', gap: '0.5rem' }}>
 
-          {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+          {/* Logo solo icono en mobile */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', flexShrink: 0 }}>
             <div
               style={{
-                width: '2rem', height: '2rem', borderRadius: '0.5rem',
+                width: '1.75rem', height: '1.75rem', borderRadius: '0.4rem',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
               }}
             >
-              <CalendarIcon size={16} style={{ color: 'white' }} />
+              <CalendarIcon size={14} style={{ color: 'white' }} />
             </div>
-            <span style={{ fontSize: '1.125rem', fontWeight: 900, fontStyle: 'italic', letterSpacing: '-0.025em', display: 'none' }} className="md:block">
-              AgendaPro
-            </span>
           </div>
 
-          {/* Tabs */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--background)', borderRadius: '1rem', padding: '0.25rem', border: '1px solid var(--border)' }}>
+          {/* Tabs más compactos */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.125rem', background: 'var(--background)', borderRadius: '0.75rem', padding: '0.2rem', border: '1px solid var(--border)' }}>
             {tabs.map(tab => {
               const isActive = activeTab === tab.id;
               const Icon = tab.icon;
@@ -123,55 +120,51 @@ function App() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: '0.375rem',
-                    padding: '0.5rem 0.875rem', borderRadius: '0.75rem',
-                    fontSize: '0.8125rem', fontWeight: 700,
+                    display: 'flex', alignItems: 'center', gap: '0.25rem',
+                    padding: '0.375rem 0.625rem', borderRadius: '0.625rem',
+                    fontSize: '0.75rem', fontWeight: 700,
                     border: 'none', cursor: 'pointer', transition: 'all 0.2s',
                     background: isActive ? 'var(--primary)' : 'transparent',
                     color: isActive ? 'white' : 'var(--text-muted)',
-                    boxShadow: isActive ? '0 4px 6px -1px rgba(99,102,241,0.3)' : 'none',
+                    boxShadow: isActive ? '0 2px 4px -1px rgba(99,102,241,0.3)' : 'none',
                   }}
                 >
-                  <Icon size={16} />
-                  <span style={{ display: 'none' }} className="sm:inline">{tab.label}</span>
+                  <Icon size={14} />
                 </button>
               );
             })}
           </div>
 
-          {/* Right section: theme + user */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
-            {/* Theme/Color picker */}
+          {/* Right: theme + user (compacto) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', flexShrink: 0 }}>
             <div ref={themeRef} style={{ position: 'relative' }}>
               <button
                 onClick={() => setShowThemePicker(!showThemePicker)}
                 style={{
-                  width: '2.25rem', height: '2.25rem', borderRadius: '0.75rem',
+                  width: '1.75rem', height: '1.75rem', borderRadius: '0.5rem',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   background: 'var(--background)', border: '1px solid var(--border)',
                   cursor: 'pointer', transition: 'all 0.2s', color: 'var(--text-muted)',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'var(--background)'; }}
                 title="Personalizar"
               >
-                <Palette size={16} />
+                <Palette size={13} />
               </button>
 
               {showThemePicker && (
                 <div
                   style={{
-                    position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem',
-                    width: '14rem', padding: '1rem', borderRadius: '1rem',
+                    position: 'absolute', top: '100%', right: 0, marginTop: '0.375rem',
+                    width: '13rem', padding: '0.75rem', borderRadius: '0.875rem',
                     background: 'var(--surface)', border: '1px solid var(--border)',
-                    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
+                    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.15)',
                     zIndex: 50,
                   }}
                 >
-                  <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    Color
+                  <p style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Color del tema
                   </p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.5rem', marginBottom: '1rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.375rem', marginBottom: '0.75rem' }}>
                     {colors.map(c => {
                       const isSelected = settings.calendarColor === c.value;
                       return (
@@ -189,18 +182,18 @@ function App() {
                           }}
                           title={c.name}
                         >
-                          {isSelected && <Check size={12} style={{ color: 'white' }} strokeWidth={3} />}
+                          {isSelected && <Check size={10} style={{ color: 'white' }} strokeWidth={3} />}
                         </button>
                       );
                     })}
                   </div>
-                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '0.75rem' }}>
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '0.625rem' }}>
                     <button
                       onClick={() => { toggleTheme(); setShowThemePicker(false); }}
                       style={{
-                        width: '100%', padding: '0.625rem', borderRadius: '0.75rem',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
-                        fontSize: '0.8125rem', fontWeight: 700, cursor: 'pointer',
+                        width: '100%', padding: '0.5rem', borderRadius: '0.625rem',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.375rem',
+                        fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer',
                         background: 'var(--background)', border: '1px solid var(--border)',
                         color: 'var(--text)', transition: 'all 0.2s',
                       }}
@@ -208,8 +201,8 @@ function App() {
                       onMouseLeave={e => { e.currentTarget.style.background = 'var(--background)'; }}
                     >
                       {theme === 'dark'
-                        ? <Sun size={18} style={{ color: '#f59e0b' }} />
-                        : <Moon size={18} />}
+                        ? <Sun size={16} style={{ color: '#f59e0b' }} />
+                        : <Moon size={16} />}
                       {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
                     </button>
                   </div>
@@ -217,29 +210,26 @@ function App() {
               )}
             </div>
 
-            {/* User */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.5rem', borderRadius: '0.75rem', background: 'var(--background)', border: '1px solid var(--border)' }}>
-              <div style={{ width: '1.75rem', height: '1.75rem', borderRadius: '9999px', overflow: 'hidden', flexShrink: 0, background: 'linear-gradient(135deg, var(--primary), var(--secondary))' }}>
+            {/* User avatar compacto */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0', padding: '0.125rem 0.25rem 0.125rem 0.125rem', borderRadius: '0.625rem', background: 'var(--background)', border: '1px solid var(--border)' }}>
+              <div style={{ width: '1.5rem', height: '1.5rem', borderRadius: '9999px', overflow: 'hidden', flexShrink: 0, background: 'linear-gradient(135deg, var(--primary), var(--secondary))' }}>
                 <img
                   src={user.photo || `https://ui-avatars.com/api/?name=${user.name}&background=6366f1&color=fff&bold=true`}
                   alt={user.name}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
-              <span style={{ fontSize: '0.8125rem', fontWeight: 700, display: 'none' }} className="md:block">{user.name}</span>
               <button
                 onClick={logout}
                 style={{
-                  padding: '0.25rem', marginLeft: '0.125rem', color: '#ef4444',
-                  background: 'transparent', border: 'none', borderRadius: '0.5rem',
+                  padding: '0.2rem', color: '#ef4444',
+                  background: 'transparent', border: 'none', borderRadius: '0.375rem',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                 title="Cerrar sesión"
               >
-                <LogOut size={16} />
+                <LogOut size={13} />
               </button>
             </div>
           </div>
