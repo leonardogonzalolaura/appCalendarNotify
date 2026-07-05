@@ -15,8 +15,7 @@ const CalendarHeader = ({ currentMonth, onPrevMonth, onNextMonth, onGoToToday })
             justifyContent: 'space-between',
             padding: isMobile ? '8px' : '16px',
             borderBottom: '1px solid var(--border)',
-            backgroundColor: 'var(--surface)',
-            backgroundColor: 'rgba(var(--surface-rgb), 0.3)',
+            backgroundColor: 'var(--glass)',
             position: 'relative',
             zIndex: 10
         }}>

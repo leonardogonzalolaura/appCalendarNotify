@@ -63,8 +63,8 @@ const Settings = () => {
             >
               <span
                 style={{
-                  width: '38px',
-                  height: '38px',
+                  width: isMobile ? '32px' : '38px',
+                  height: isMobile ? '32px' : '38px',
                   borderRadius: '10px',
                   display: 'flex',
                   alignItems: 'center',
@@ -110,17 +110,18 @@ const Settings = () => {
                     {Notification.permission === 'granted' ? 'Permitido' : Notification.permission === 'denied' ? 'Bloqueado' : 'Pendiente'}
                   </span>
                 </div>
-                <p className="text-[10px] text-muted mt-1 leading-relaxed">
+                <p className="text-[10px] text-muted mt-1 leading-relaxed" style={{ fontSize: isMobile ? '10px' : undefined }}>
                   Permite a la aplicación lanzar globos de alerta de escritorio para tus tareas programadas.
                 </p>
 
                 {Notification.permission === 'denied' && (
                   <div
-                    className="mt-3 text-[10px] p-3 rounded-lg border leading-normal font-semibold"
+                    className="mt-3 text-[10px] rounded-lg border leading-normal font-semibold"
                     style={{
                       backgroundColor: '#fee2e2',
                       color: '#991b1b',
-                      borderColor: 'rgba(239, 68, 68, 0.2)'
+                      borderColor: 'rgba(239, 68, 68, 0.2)',
+                      padding: isMobile ? '8px' : '12px'
                     }}
                   >
                     🔒 <strong>Instrucciones:</strong> Has bloqueado las notificaciones. Haz clic en el ícono del <strong>candado</strong> (a la izquierda de la URL en tu barra de direcciones) y cambia Notificaciones a <strong>Permitir</strong>. Luego recarga la página.
@@ -157,8 +158,8 @@ const Settings = () => {
             >
               <span
                 style={{
-                  width: '38px',
-                  height: '38px',
+                  width: isMobile ? '32px' : '38px',
+                  height: isMobile ? '32px' : '38px',
                   borderRadius: '10px',
                   display: 'flex',
                   alignItems: 'center',
@@ -190,7 +191,7 @@ const Settings = () => {
                     {hasInteracted ? 'Listo' : 'Falta Activar'}
                   </span>
                 </div>
-                <p className="text-[10px] text-muted mt-1 leading-relaxed">
+                <p className="text-[10px] text-muted mt-1 leading-relaxed" style={{ fontSize: isMobile ? '10px' : undefined }}>
                   Los navegadores bloquean el sonido hasta que interactúas con la pestaña.
                   {hasInteracted
                     ? ' ¡Listo! Ya interactuaste, las alarmas sonarán correctamente.'
@@ -210,8 +211,8 @@ const Settings = () => {
             >
               <span
                 style={{
-                  width: '38px',
-                  height: '38px',
+                  width: isMobile ? '32px' : '38px',
+                  height: isMobile ? '32px' : '38px',
                   borderRadius: '10px',
                   display: 'flex',
                   alignItems: 'center',
@@ -243,7 +244,7 @@ const Settings = () => {
                     Navegador
                   </span>
                 </div>
-                <p className="text-[10px] text-muted mt-1 leading-relaxed">
+                <p className="text-[10px] text-muted mt-1 leading-relaxed" style={{ fontSize: isMobile ? '10px' : undefined }}>
                   Los navegadores reducen la precisión de temporizadores en pestañas secundarias o minimizadas. **Mantén la pestaña visible** para recibir las notificaciones a la hora exacta.
                 </p>
               </div>
@@ -260,8 +261,8 @@ const Settings = () => {
             >
               <span
                 style={{
-                  width: '38px',
-                  height: '38px',
+                  width: isMobile ? '32px' : '38px',
+                  height: isMobile ? '32px' : '38px',
                   borderRadius: '10px',
                   display: 'flex',
                   alignItems: 'center',
@@ -293,7 +294,7 @@ const Settings = () => {
                     Sistema OS
                   </span>
                 </div>
-                <p className="text-[10px] text-muted mt-1 leading-relaxed">
+                <p className="text-[10px] text-muted mt-1 leading-relaxed" style={{ fontSize: isMobile ? '10px' : undefined }}>
                   Si las alertas están activas pero no ves el globo emergente, tu sistema operativo podría tener activado **No Molestar** o **Asistente de Enfoque** bloqueando los popups.
                 </p>
               </div>
@@ -309,8 +310,8 @@ const Settings = () => {
             >
               <span
                 style={{
-                  width: '38px',
-                  height: '38px',
+                  width: isMobile ? '32px' : '38px',
+                  height: isMobile ? '32px' : '38px',
                   borderRadius: '10px',
                   display: 'flex',
                   alignItems: 'center',
@@ -342,7 +343,7 @@ const Settings = () => {
                     Batería
                   </span>
                 </div>
-                <p className="text-[10px] text-muted mt-1 leading-relaxed">
+                <p className="text-[10px] text-muted mt-1 leading-relaxed" style={{ fontSize: isMobile ? '10px' : undefined }}>
                   El ahorro de batería suspende procesos en segundo plano. Te recomendamos deshabilitarlo para asegurar que tus alertas se activen sin retraso.
                 </p>
               </div>

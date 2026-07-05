@@ -12,9 +12,10 @@ const CalendarDay = ({ day, activities, isCurrentMonth, isToday, calendarColor, 
             whileHover={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
             onClick={() => onDayClick(day)}
             style={{
-                minHeight: isMobile ? '52px' : '80px',
+                minHeight: isMobile ? '58px' : '80px',
                 padding: isMobile ? '3px' : '6px',
                 opacity: !isCurrentMonth ? 0.3 : 1,
+                backgroundColor: isCurrentMonth ? 'rgba(255,255,255,0.03)' : 'transparent',
                 position: isToday ? 'relative' : undefined,
                 display: 'flex',
                 flexDirection: 'column',
@@ -24,14 +25,14 @@ const CalendarDay = ({ day, activities, isCurrentMonth, isToday, calendarColor, 
                 cursor: 'pointer'
             }}
         >
-            <div className="flex justify-between items-start mb-1">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
                 <motion.span
                     initial={isToday ? { scale: 0.8 } : {}}
                     animate={isToday ? { scale: 1 } : {}}
                     transition={{ duration: 0.3, type: "spring" }}
                     style={{
-                        width: isMobile ? '28px' : '36px',
-                        height: isMobile ? '28px' : '36px',
+                        width: isMobile ? '32px' : '36px',
+                        height: isMobile ? '32px' : '36px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
